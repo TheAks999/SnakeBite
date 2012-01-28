@@ -214,15 +214,19 @@ function TurnLeft()
 	{
 		case Direction.EAST:
 			inputDirection = Direction.NORTH;
+			transform.rotation.eulerAngles.y = 180;
 			break;
 		case Direction.WEST:
 			inputDirection = Direction.SOUTH;
+			transform.rotation.eulerAngles.y = 0;
 			break;
 		case Direction.NORTH:
 			inputDirection = Direction.WEST;
+			transform.rotation.eulerAngles.y = 90;
 			break;
 		case Direction.SOUTH:
 			inputDirection = Direction.EAST;
+			transform.rotation.eulerAngles.y = 270;
 			break;
 	}
 }
@@ -233,15 +237,19 @@ function TurnRight()
 	{
 		case Direction.EAST:
 			inputDirection = Direction.SOUTH;
+			transform.rotation.eulerAngles.y = 0;
 			break;
 		case Direction.WEST:
 			inputDirection = Direction.NORTH;
+			transform.rotation.eulerAngles.y = 180;
 			break;
 		case Direction.NORTH:
 			inputDirection = Direction.EAST;
+			transform.rotation.eulerAngles.y = 270;
 			break;
 		case Direction.SOUTH:
 			inputDirection = Direction.WEST;
+			transform.rotation.eulerAngles.y = 90;
 			break;
 	}	
 }
