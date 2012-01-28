@@ -305,10 +305,12 @@ public function CutHere()
 	{
 		Debug.Log("Cutting Snake");
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
+		Destroy(child.GetComponent("FollowerControl"));
+		child.AddComponent("AIControl");
 		tmpChild.SetHead(child, 0);
 		SetChildren();
 		
-		GameObject.Destroy(gameObject);
+		DestroyObject(gameObject);
 	}
 	else
 	{
