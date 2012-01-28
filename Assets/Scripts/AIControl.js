@@ -10,7 +10,7 @@ private var timestep : float = 0;
 
 function Start ()
 {
-	
+	modelScript = GetComponent("SnakeModel");
 }
 
 function Update () 

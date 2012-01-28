@@ -6,7 +6,7 @@ public var criticalSectionSize : int = 5;
  
 function Start () 
 {
-	
+	turnScript = GetComponent("SnakeModel");
 }
 
 function Update () 
