@@ -84,7 +84,7 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 	} 
 	
 	isCritical = true;
-	renderer.material.color = Color.red;
+	//renderer.material.color = Color.red;
 	
 	if (size > 1)
 	{
@@ -137,14 +137,14 @@ private function MakeSnake(idNumber:int,size:int,dir:Direction,criticalSections:
 	parent = parentSnake;
 	head = snakeHead;
 	childID = idNumber;
-	renderer.material.color = Color.green;
+	//renderer.material.color = Color.green;
 	criticalSize = criticals;
 	isHead = false;
 	
 	if (criticalSections > 0)
 	{
 		isCritical = true;
-		renderer.material.color = Color.yellow;
+		//renderer.material.color = Color.yellow;
 	}
 	
 	if (size > 1)
@@ -338,6 +338,7 @@ private function SetHead(headObject:GameObject,idNumber:int)
 	if (idNumber == 0)
 	{
 		isHead = true;
+		parent = gameObject;
 	}
 	
 	head = headObject;
