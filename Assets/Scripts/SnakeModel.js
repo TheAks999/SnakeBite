@@ -84,7 +84,7 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 	} 
 	
 	isCritical = true;
-	renderer.material.color = Color.red;
+	//renderer.material.color = Color.red;
 	
 	if (size > 1)
 	{
@@ -137,14 +137,14 @@ private function MakeSnake(idNumber:int,size:int,dir:Direction,criticalSections:
 	parent = parentSnake;
 	head = snakeHead;
 	childID = idNumber;
-	renderer.material.color = Color.green;
+	//renderer.material.color = Color.green;
 	criticalSize = criticals;
 	isHead = false;
 	
 	if (criticalSections > 0)
 	{
 		isCritical = true;
-		renderer.material.color = Color.yellow;
+		//renderer.material.color = Color.yellow;
 	}
 	
 	if (size > 1)
@@ -184,6 +184,22 @@ private function MakeSnake(idNumber:int,size:int,dir:Direction,criticalSections:
 function KillSnake()
 {
 	Debug.Log("Killing Snake");
+	if (gameObject != head)
+	{
+		SetChildren();
+	}
+	KillHelper();
+}
+
+private function KillHelper()
+{
+	if (numberOfChildren > 0)
+	{
+		var childModel : SnakeModel = child.GetComponent("SnakeModel");
+		childModel.KillHelper();
+	}
+	
+	Destroy(gameObject);
 }
 
 
@@ -309,10 +325,12 @@ public function CutHere()
 	{
 		Debug.Log("Cutting Snake");
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
+		Destroy(child.GetComponent("FollowerControl"));
+		child.AddComponent("AIControl");
 		tmpChild.SetHead(child, 0);
 		SetChildren();
 		
-		GameObject.Destroy(gameObject);
+		DestroyObject(gameObject);
 	}
 	else
 	{
@@ -327,11 +345,12 @@ private function SetHead(headObject:GameObject,idNumber:int)
 	if (idNumber == 0)
 	{
 		isHead = true;
+		parent = gameObject;
 	}
 	
 	head = headObject;
 	
-	if(child!=null)
+	if(numberOfChildren > 0)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
 		tmpChild.SetHead(headObject, idNumber+1);
@@ -341,7 +360,7 @@ private function SetHead(headObject:GameObject,idNumber:int)
 
 private function SetChildren()
 {
-	var parentModel:SnakeModel = parent.GetComponent("SnakeModel");
+	var parentModel:SnakeModel = parent.GetComponent("SnakeModel");	
 	var headModel:SnakeModel = head.GetComponent("SnakeModel");
 	headModel.SetChildren(parentModel.ChildID());
 }

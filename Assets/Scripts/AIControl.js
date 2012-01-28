@@ -23,27 +23,34 @@ function Update ()
 	{
 		Debug.Log("Change direction");
 	
-		
-		var choice:int = Random.Range(1,100);
-		
-		if (choice < 51)
+		if (transform.position.x > 20 || transform.position.x < -20 || 
+			transform.position.z > 20 || transform.position.z < -20 )
 		{
-			//go straight
+				modelScript.TurnLeft();
+		}
+		else
+		{
+			var choice:int = Random.Range(1,100);
 			
-			//do nothing now
+			if (choice < 51)
+			{
+				//go straight
+				
+				//do nothing now
+			}
+			else if (choice < 76)
+			{
+				//go left
+				modelScript.TurnLeft();
+				
+			}
+			else if (choice >= 76 &&choice <= 100)
+			{
+				//go right
+				modelScript.TurnRight();
+			}
+			timestep = 0;
 		}
-		else if (choice < 76)
-		{
-			//go left
-			modelScript.TurnLeft();
-			
-		}
-		else if (choice >= 76 &&choice <= 100)
-		{
-			//go right
-			modelScript.TurnRight();
-		}
-		timestep = 0;
 	}
 	
 	modelScript.UpdatePosition();
