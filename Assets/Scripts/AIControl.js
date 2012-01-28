@@ -10,9 +10,6 @@ private var timestep : float = 0;
 
 function Start ()
 {
-	modelScript = GetComponent("SnakeModel");
-	modelScript.MakeSnake(initialSnakeSize,Direction.EAST,criticalSectionSize);
-
 	
 }
 
@@ -55,3 +52,9 @@ function Update ()
 	
 	modelScript.UpdatePosition();
 }	
+
+function Setup()
+{
+	modelScript = GetComponent("SnakeModel");
+	modelScript.MakeSnake(initialSnakeSize,Direction.EAST,criticalSectionSize);
+}
