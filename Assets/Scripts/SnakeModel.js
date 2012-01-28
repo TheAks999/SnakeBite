@@ -33,6 +33,11 @@ private var numberOfChildren : int = 0;
 private var childID : int = 0;
 
 
+private var forceTurn : int = 0;
+
+//true is left
+private var forceTurnDirection : boolean = false;
+
 function IsHead()
 {
 	return isHead;
@@ -241,13 +246,34 @@ function TurnRight()
 	}	
 }
 
+function ForceTurn(dir:boolean)
+{
+	forceTurn = 2;
+	forceTurnDirection = dir;
+}
+
 
 function UpdatePosition()
 {
 	
 	if (VectorEqual(transform.position, nextPosition, .001))
 	{
+		if (forceTurn > 0)
+		{
+			if (forceTurnDirection == true)
+			{
+				TurnLeft();
+			}
+			else
+			{
+				TurnRight();
+			}
+			forceTurn--;
+		}
 		
+		
+	
+	
 		transform.position.x = Mathf.Round(transform.position.x);
 		transform.position.y = Mathf.Round(transform.position.y);
 		transform.position.z = Mathf.Round(transform.position.z);
@@ -284,6 +310,7 @@ function UpdatePosition()
 		direction = inputDirection;
 		nextPosition += normal;
 	}
+	
 	
 	transform.position = Vector3.Lerp(transform.position,nextPosition,Time.deltaTime*speed);
 }
@@ -325,6 +352,7 @@ public function CutHere()
 		child.AddComponent("AIControl");
 		tmpChild.SetHead(child, 0);
 		SetChildren();
+		tmpChild.ForceTurn(true);
 		
 		DestroyObject(gameObject);
 	}
