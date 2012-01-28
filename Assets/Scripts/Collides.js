@@ -7,8 +7,9 @@ function OnTriggerEnter (other : Collider)
     	var snake:SnakeModel = other.GetComponent(SnakeModel);
     	if(snake.IsCritical())
     	{
+    		var head:SnakeModel = snake.GetHead().GetComponent(SnakeModel);
     		//Debug.Log("KILL!!");
-    		snake.KillSnake();
+    		head.KillSnake();
     	}
     	else
     	{

@@ -184,7 +184,10 @@ private function MakeSnake(idNumber:int,size:int,dir:Direction,criticalSections:
 function KillSnake()
 {
 	Debug.Log("Killing Snake");
-	SetChildren();
+	if (gameObject != head)
+	{
+		SetChildren();
+	}
 	KillHelper();
 }
 
@@ -353,7 +356,7 @@ private function SetHead(headObject:GameObject,idNumber:int)
 
 private function SetChildren()
 {
-	var parentModel:SnakeModel = parent.GetComponent("SnakeModel");
+	var parentModel:SnakeModel = parent.GetComponent("SnakeModel");	
 	var headModel:SnakeModel = head.GetComponent("SnakeModel");
 	headModel.SetChildren(parentModel.ChildID());
 }
