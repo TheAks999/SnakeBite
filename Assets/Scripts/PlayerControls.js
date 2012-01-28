@@ -1,24 +1,25 @@
 #pragma strict
 private var turnScript:SnakeModel;
+
 public var initialSnakeSize : int = 10;
 public var criticalSectionSize : int = 5;
-
-
+ 
 function Start () 
 {
 	turnScript = GetComponent("SnakeModel");
-	turnScript.MakeSnake(initialSnakeSize,Direction.WEST,criticalSectionSize);
+	turnScript.MakeSnake(initialSnakeSize,Direction.EAST,criticalSectionSize);
 }
 
 function Update () 
 {
-
-	if(Input.GetAxis("Horizontal") < 0)
+	//Debug.Log(Input.GetButtonDown("Horizontal"));
+	if(Input.GetKeyDown(KeyCode.A))
 	{
+		
 		//checkPosition.SetCommand(checkPosition.Command.TurnLeft);
 		turnScript.TurnLeft();
 	}
-	else if(Input.GetAxis("Horizontal") > 0)
+	else if(Input.GetKeyDown(KeyCode.D))
 	{
 		//checkPosition.SetCommand(checkPosition.Command.TurnRight);
 		turnScript.TurnRight();
