@@ -7,7 +7,6 @@ public var criticalSectionSize : int = 5;
 function Start () 
 {
 	turnScript = GetComponent("SnakeModel");
-	turnScript.MakeSnake(initialSnakeSize,Direction.EAST,criticalSectionSize);
 }
 
 function Update () 
@@ -31,4 +30,11 @@ function Update ()
 function OnGUI()
 {
 	GUI.Label(Rect(Screen.width - 200, 0, 200,50), Time.realtimeSinceStartup.ToString());
+}
+
+
+function Setup()
+{
+	turnScript = GetComponent("SnakeModel");
+	turnScript.MakeSnake(initialSnakeSize,Direction.EAST,criticalSectionSize);
 }
