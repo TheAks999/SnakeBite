@@ -3,6 +3,7 @@ var logo:Texture2D;
 var buttonHeight:int = 60;
 var buttonSpacing:int = 10;
 var startGUI:GUIStyle;
+var
 
 
 private var width:float;
@@ -38,7 +39,7 @@ function OnGUI()
 	var logoRect:Rect = new Rect((Screen.width/2)-(width/2), top, width, height);
 	GUI.Box(logoRect, logo);
 	var button:int = 0;
-	GUI.Button(Rect(Screen.width/2-(223/2), buttonSpacing+logoRect.bottom+(buttonSpacing*button)+(buttonHeight*button), 223, buttonHeight), "", startGUI);
+	GUI.Button(Rect(0, buttonSpacing+logoRect.bottom+(buttonSpacing*button)+(buttonHeight*button), 223, buttonHeight), "", startGUI);
 	button++;
 	GUI.Button(Rect(logoRect.left+buttonSpacing, buttonSpacing+logoRect.bottom+(buttonSpacing*button)+(buttonHeight*button), logoRect.width-(buttonSpacing*2), buttonHeight), "Exit Game");
 }
