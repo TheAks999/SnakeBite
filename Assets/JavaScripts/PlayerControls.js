@@ -27,17 +27,6 @@ function Update ()
 		turnScript.TurnRight();
 	}
 	
-	/*if (growth < growthFactor)
-	{
-		growth ++;
-		//Debug.Log("Growth: " + growth);
-	}
-	else
-	{
-		growth = 0;
-		turnScript.Grow(5);
-		
-	}*/
 	
 	
 	turnScript.UpdatePosition();

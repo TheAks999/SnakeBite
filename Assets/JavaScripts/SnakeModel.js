@@ -98,8 +98,12 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 	numberOfChildren = size-1;
 	childID = 0;
 	criticalSize = criticalSections;
-	GetComponent(ScoreWorth).pointWorth = headPointWorth;
 	
+	if (GetComponent(ScoreWorth))
+	{
+		GetComponent(ScoreWorth).pointWorth = headPointWorth;
+	}
+		
 	if (criticalSections <= 0)
 	{
 		criticalSize = 1;
@@ -133,7 +137,6 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 		
 		child = Instantiate(bodyMesh, childSpot,Quaternion.identity);//GameObject.CreatePrimitive(PrimitiveType.Sphere);
 		
-		//child = Instantiate( prefab ,childSpot,Quaternion.identity); 
 		child.AddComponent("SnakeModel");
 		child.AddComponent("FollowerControl");
 		child.AddComponent(ScoreWorth);
@@ -144,7 +147,7 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 		}
 		child.GetComponent(SphereCollider).collider.isTrigger = true;
 		child.GetComponent(SphereCollider).radius = 0.1;
-		
+		//child.renderer.
 		child.transform.position = childSpot;
 		
 		child.GetComponent(ScoreWorth).pointWorth = bodyPointWorth;
@@ -207,9 +210,6 @@ function KillSnake()
 	
 	Debug.Log("Killing Snake");
 
-	
-	KillHelper();
-	
 	if (gameObject != head)
 	{
 		ReCalculateChildren();
@@ -219,6 +219,10 @@ function KillSnake()
 	{
 		//game over
 	}
+	
+	KillHelper();
+	
+	
 }
 
 private function KillHelper()
