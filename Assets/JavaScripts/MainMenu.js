@@ -5,6 +5,7 @@ var buttonSpacing:int = 10;
 var startGUI:GUIStyle;
 var exitGUI:GUIStyle;
 var helpGUI:GUIStyle;
+var startLevel:String = "Basic";
 
 
 private var width:float;
@@ -42,7 +43,7 @@ function OnGUI()
 	GUI.Label(logoRect, logo);
 	if(GUI.Button(Rect(logoRect.left, logoRect.bottom+buttonSpacing, 223, buttonHeight), "", startGUI))
 	{
-		Application.LoadLevel("Basic");
+		Application.LoadLevel(startLevel);
 	}
 	GUI.Button(Rect(logoRect.right-223, logoRect.bottom+buttonSpacing, 223, buttonHeight), "", exitGUI);
 	GUI.Button(Rect((Screen.width/2)-(72/2), logoRect.bottom+buttonSpacing, 72, buttonHeight), "", helpGUI);
