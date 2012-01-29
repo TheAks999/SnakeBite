@@ -27,26 +27,12 @@ function Update ()
 		turnScript.TurnRight();
 	}
 	
-	if (growth < growthFactor)
-	{
-		growth ++;
-		//Debug.Log("Growth: " + growth);
-	}
-	else
-	{
-		growth = 0;
-		turnScript.Grow(5);
-		
-	}
 	
 	
 	turnScript.UpdatePosition();
 }
 
-function OnGUI()
-{
-	GUI.Label(Rect(Screen.width - 200, 0, 200,50), Time.realtimeSinceStartup.ToString());
-}
+
 
 
 function Setup()

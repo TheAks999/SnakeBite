@@ -6,7 +6,9 @@ function OnTriggerEnter(collider:Collider)
 	if(snakeModel.IsCritical())
 	{
 		snakeModel.KillSnake();
-	}else{
+	}
+	else
+	{
 		snakeModel.CutHere();
 	}
 }
