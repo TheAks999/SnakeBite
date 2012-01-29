@@ -1,5 +1,5 @@
 var playerObjectID : String = "PlayerSnake";
-var computerObjectID : String = "PlayerSnake";
+var computerObjectID : String = "AISnake";
 
 
 function Start()
@@ -14,5 +14,6 @@ function Start()
 	computerControl.Setup();
 }
 
-function Update () {
+function Update () 
+{
 }
