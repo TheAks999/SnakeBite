@@ -193,6 +193,7 @@ function KillSnake()
 	{
 		SetChildren();
 	}
+	
 	KillHelper();
 }
 
@@ -354,12 +355,16 @@ public function CutHere()
 {
 	if (numberOfChildren >= criticalSize)	
 	{
-		Debug.Log("Cutting Snake");
+		//Debug.Log("Cutting Snake");
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
 		Destroy(child.GetComponent("FollowerControl"));
 		child.AddComponent("AIControl");
-		tmpChild.SetHead(child, 0);
+		tmpChild.SetAsHead();
+		
+		
 		SetChildren();
+		
+		
 		tmpChild.ForceTurn(true);
 		
 		DestroyObject(gameObject);
@@ -370,16 +375,22 @@ public function CutHere()
 	}
 }
 
-
+private function SetAsHead()
+{
+	head = gameObject;
+	isHead = true;
+	parent = null;
+	childID = 0;
+	if(numberOfChildren > 0)
+	{
+		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
+		tmpChild.SetHead(head, 1);
+	}
+}
 
 private function SetHead(headObject:GameObject,idNumber:int)
 {
-	if (idNumber == 0)
-	{
-		isHead = true;
-		parent = gameObject;
-	}
-	
+	childID = idNumber;
 	head = headObject;
 	
 	if(numberOfChildren > 0)
