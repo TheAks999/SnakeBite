@@ -10,6 +10,12 @@ var tailMesh:GameObject;
 var bodyPointWorth : int = 5;
 var headPointWorth : int = 100;
 
+var splitBodyPointWorth : int = 5;
+var splitHeadPointWorth : int = 100;
+var splitSnakeSpeed : float = 10.0f;
+var splitSnakeCriticalSize : int = 5;
+
+
 
 //True if this object is the head
 private var isHead : boolean = true;
@@ -153,6 +159,7 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 		child.GetComponent(ScoreWorth).pointWorth = bodyPointWorth;
 	
 		var childModel : SnakeModel = child.GetComponent("SnakeModel");
+		childModel.speed = speed;
 		childModel.SetNextPosition(transform.position,direction);
 		childModel.MakeSnake(1,size-1,dir,criticalSections-1,criticalSections,gameObject,head);
 	}
@@ -432,10 +439,16 @@ private function SetAsHead()
 	parent = null;
 	childID = 0;
 	isCritical = true;
+	
+	var score : ScoreWorth = GetComponent(ScoreModel);
+	
+	score.pointWorth = splitHeadPointWorth;
+	
 	if(numberOfChildren > 0)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
-		tmpChild.SetHead(head, 1,criticalSize-1);
+		tmpChild.speed = splitSnakeSpeed;
+		tmpChild.SetHead(head, 1,splitSnakeCriticalSize-1);
 	}
 }
 
@@ -448,9 +461,14 @@ private function SetHead(headObject:GameObject,idNumber:int,criticalZone:int)
 		isCritical = true;
 	}
 	
+	var score : ScoreWorth = GetComponent(ScoreModel);
+	
+	score.pointWorth = splitBodyPointWorth;
+	
 	if(numberOfChildren > 0)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
+		tmpChild.speed = splitSnakeSpeed;
 		tmpChild.SetHead(headObject, idNumber+1, criticalZone-1);
 	}
 	
