@@ -61,6 +61,16 @@ function GetHead()
 	return head;
 }
 
+function GetChild()
+{
+	return child;
+}
+
+function GetParent()
+{
+	return parent;
+}
+
 function NumberOfChildren()
 {
 	return numberOfChildren;
@@ -128,10 +138,19 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 		//child = Instantiate( prefab ,childSpot,Quaternion.identity); 
 		//child.AddComponent(SnakeModel);
 		child.AddComponent(FollowerControl);
-		
+		/*
+<<<<<<< HEAD
 
 		
-		
+=======
+		if (!child.GetComponent(SphereCollider))
+		{
+			child.AddComponent(SphereCollider);
+		}
+		child.GetComponent(SphereCollider).collider.isTrigger = true;
+		child.GetComponent(SphereCollider).radius = 0.1;
+>>>>>>> f9ba1f45e1bcc0d4d037b8d72422f60f14599752
+		*/
 		child.transform.position = childSpot;
 		
 	
@@ -393,6 +412,7 @@ public function CutHere()
 		Destroy(child.GetComponent(FollowerControl));
 		child.AddComponent(AIControl);
 		child.AddComponent(Rigidbody);
+		child.AddComponent("Collides");
 		child.rigidbody.useGravity = false;
 		
 		tmpChild.SetAsHead();
@@ -462,5 +482,21 @@ private function ReCalculateChildren(numChildren:int)
 	{
 		child = null;
 	}
+}
+
+
+public function Grow(numChildrenToAdd:int)
+{
+	var tempChild : GameObject = child;
+	var tempModel : SnakeModel;
+	for (var i :int =0;i<numberOfChildren-1;i++)
+	{
+		tempModel = tempChild.GetComponent("SnakeModel");
+		tempChild = tempModel.GetChild();
+	}
+	 
+	tempModel = tempChild.GetComponent("SnakeModel");
+	
+	tempModel.MakeSnake(tempModel.ChildID(),numChildrenToAdd,tempModel.CurrentDirection(),0,criticalSize,tempChild,tempModel.GetHead());
 }
 
