@@ -1,6 +1,6 @@
 #pragma strict
 
-var modelScript:SnakeModel; 
+private var modelScript:SnakeModel; 
 
 
 public var initialSnakeSize : int = 10;
@@ -55,6 +55,6 @@ function Update ()
 
 function Setup()
 {
-	modelScript = GetComponent("SnakeModel");
+	modelScript = GetComponent(SnakeModel);
 	modelScript.MakeSnake(initialSnakeSize,Direction.EAST,criticalSectionSize);
 }
