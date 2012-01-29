@@ -176,10 +176,7 @@ private function MakeSnake(idNumber:int,size:int,dir:Direction,criticalSections:
 				Debug.LogWarning("NOO@O!!! no direction");
 		}
 		
-		
 		child = Instantiate( gameObject ,childSpot,Quaternion.identity);
-		//child.tag = "child";
-	
 		
 		var childModel : SnakeModel = child.GetComponent("SnakeModel");
 		childModel.SetNextPosition(transform.position,inputDirection);
@@ -318,22 +315,18 @@ function UpdatePosition()
 	{
 		case Direction.EAST:
 			transform.rotation.eulerAngles.y = 270;
-			Debug.Log("Turned East: " + transform.name);
 			break;
 			
 		case Direction.WEST:
 			transform.rotation.eulerAngles.y = 90;
-			Debug.Log("Turned West: " + transform.name);
 			break;
 		
 		case Direction.SOUTH:
 			transform.rotation.eulerAngles.y = 0;
-			Debug.Log("Turned South: " + transform.name);
 			break;
 			
 		case Direction.NORTH:
 			transform.rotation.eulerAngles.y = 180;
-			Debug.Log("Turned North: " + transform.name);
 			break;
 		default:
 			Debug.Log("Couldn't find direction");
