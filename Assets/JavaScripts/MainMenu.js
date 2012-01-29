@@ -3,7 +3,7 @@ var logo:Texture2D;
 var buttonHeight:int = 60;
 var buttonSpacing:int = 10;
 var startGUI:GUIStyle;
-//var
+var exitGUI:GUIStyle;
 
 
 private var width:float;
