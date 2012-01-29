@@ -193,7 +193,7 @@ function KillSnake()
 	Debug.Log("Killing Snake");
 	if (gameObject != head)
 	{
-		SetChildren();
+		ReCalculateChildren();
 	}
 	
 	KillHelper();
@@ -380,10 +380,13 @@ public function CutHere()
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
 		Destroy(child.GetComponent("FollowerControl"));
 		child.AddComponent("AIControl");
+		child.AddComponent(Rigidbody);
+		child.rigidbody.useGravity = false;
+		
 		tmpChild.SetAsHead();
 		
 		
-		SetChildren();
+		ReCalculateChildren();
 		
 		
 		tmpChild.ForceTurn(true);
@@ -402,41 +405,46 @@ private function SetAsHead()
 	isHead = true;
 	parent = null;
 	childID = 0;
+	isCritical = true;
 	if(numberOfChildren > 0)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
-		tmpChild.SetHead(head, 1);
+		tmpChild.SetHead(head, 1,criticalSize-1);
 	}
 }
 
-private function SetHead(headObject:GameObject,idNumber:int)
+private function SetHead(headObject:GameObject,idNumber:int,criticalZone:int)
 {
 	childID = idNumber;
 	head = headObject;
+	if (criticalZone > 0)
+	{
+		isCritical = true;
+	}
 	
 	if(numberOfChildren > 0)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
-		tmpChild.SetHead(headObject, idNumber+1);
+		tmpChild.SetHead(headObject, idNumber+1, criticalZone-1);
 	}
 	
 }
 
-private function SetChildren()
+private function ReCalculateChildren()
 {
 	var parentModel:SnakeModel = parent.GetComponent("SnakeModel");	
 	var headModel:SnakeModel = head.GetComponent("SnakeModel");
-	headModel.SetChildren(parentModel.ChildID());
+	headModel.ReCalculateChildren(parentModel.ChildID());
 }
 
-private function SetChildren(numChildren:int)
+private function ReCalculateChildren(numChildren:int)
 {
 	numberOfChildren = numChildren;
 	
 	if(numberOfChildren > 0)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
-		tmpChild.SetChildren(numChildren-1);
+		tmpChild.ReCalculateChildren(numChildren-1);
 	}
 	else
 	{
