@@ -186,10 +186,7 @@ private function MakeSnake(idNumber:int,size:int,dir:Direction,criticalSections:
 				Debug.LogWarning("NOO@O!!! no direction");
 		}
 		
-		
 		child = Instantiate( gameObject ,childSpot,Quaternion.identity);
-		//child.tag = "child";
-	
 		
 		var childModel : SnakeModel = child.GetComponent("SnakeModel");
 		childModel.SetNextPosition(transform.position,inputDirection);
