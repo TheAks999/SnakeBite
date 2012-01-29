@@ -3,7 +3,7 @@ private var turnScript:SnakeModel;
 
 public var initialSnakeSize : int = 10;
 public var criticalSectionSize : int = 5;
-public var growthFactor : int = 10;
+public var growthFactor : int = 100;
 private var growth : int = 0;
 
  
@@ -30,7 +30,7 @@ function Update ()
 	if (growth < growthFactor)
 	{
 		growth ++;
-		Debug.Log("Growth: " + growth);
+		//Debug.Log("Growth: " + growth);
 	}
 	else
 	{

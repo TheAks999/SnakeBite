@@ -328,22 +328,18 @@ function UpdatePosition()
 	{
 		case Direction.EAST:
 			transform.rotation.eulerAngles.y = 270;
-			Debug.Log("Turned East: " + transform.name);
 			break;
 			
 		case Direction.WEST:
 			transform.rotation.eulerAngles.y = 90;
-			Debug.Log("Turned West: " + transform.name);
 			break;
 		
 		case Direction.SOUTH:
 			transform.rotation.eulerAngles.y = 0;
-			Debug.Log("Turned South: " + transform.name);
 			break;
 			
 		case Direction.NORTH:
 			transform.rotation.eulerAngles.y = 180;
-			Debug.Log("Turned North: " + transform.name);
 			break;
 		default:
 			Debug.Log("Couldn't find direction");
@@ -476,8 +472,6 @@ public function Grow(numChildrenToAdd:int)
 	 
 	tempModel = tempChild.GetComponent("SnakeModel");
 	
-	//MakeSnake(idNumber:int,size:int,dir:Direction,criticalSections:int,criticals:int,parentSnake:GameObject,snakeHead:GameObject)
-	
-	
+	tempModel.MakeSnake(tempModel.ChildID(),numChildrenToAdd,tempModel.CurrentDirection(),0,criticalSize,tempChild,tempModel.GetHead());
 }
 
