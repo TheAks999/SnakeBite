@@ -3,6 +3,9 @@ enum Direction {NORTH, SOUTH, EAST, WEST}
 
 //The speed of the snake
 public var speed : float = 10.0f;
+var headMesh:GameObject;
+var bodyMesh:GameObject;
+var tailMesh:GameObject;
 
 //True if this object is the head
 private var isHead : boolean = true;
@@ -123,7 +126,7 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 		}
 		
 		
-		child = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		child = Instantiate(bodyMesh, childSpot,Quaternion.identity);//GameObject.CreatePrimitive(PrimitiveType.Sphere);
 		
 		//child = Instantiate( prefab ,childSpot,Quaternion.identity); 
 		child.AddComponent("SnakeModel");
@@ -142,7 +145,6 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 		var childModel : SnakeModel = child.GetComponent("SnakeModel");
 		childModel.SetNextPosition(transform.position,direction);
 		childModel.MakeSnake(1,size-1,dir,criticalSections-1,criticalSections,gameObject,head);
-	
 	}
 }
 
@@ -225,19 +227,15 @@ function TurnLeft()
 	{
 		case Direction.EAST:
 			inputDirection = Direction.NORTH;
-			transform.rotation.eulerAngles.y = 180;
 			break;
 		case Direction.WEST:
 			inputDirection = Direction.SOUTH;
-			transform.rotation.eulerAngles.y = 0;
 			break;
 		case Direction.NORTH:
 			inputDirection = Direction.WEST;
-			transform.rotation.eulerAngles.y = 90;
 			break;
 		case Direction.SOUTH:
 			inputDirection = Direction.EAST;
-			transform.rotation.eulerAngles.y = 270;
 			break;
 	}
 }
@@ -248,19 +246,15 @@ function TurnRight()
 	{
 		case Direction.EAST:
 			inputDirection = Direction.SOUTH;
-			transform.rotation.eulerAngles.y = 0;
 			break;
 		case Direction.WEST:
 			inputDirection = Direction.NORTH;
-			transform.rotation.eulerAngles.y = 180;
 			break;
 		case Direction.NORTH:
 			inputDirection = Direction.EAST;
-			transform.rotation.eulerAngles.y = 270;
 			break;
 		case Direction.SOUTH:
 			inputDirection = Direction.WEST;
-			transform.rotation.eulerAngles.y = 90;
 			break;
 	}	
 }
@@ -290,9 +284,6 @@ function UpdatePosition()
 			forceTurn--;
 		}
 		
-		
-	
-	
 		transform.position.x = Mathf.Round(transform.position.x);
 		transform.position.y = Mathf.Round(transform.position.y);
 		transform.position.z = Mathf.Round(transform.position.z);
@@ -310,26 +301,54 @@ function UpdatePosition()
 		{
 			case Direction.EAST:
 				normal = Vector3(1,0,0);
+				transform.rotation.eulerAngles.y = 270;
 				break;
 				
 			case Direction.WEST:
 				normal = Vector3(-1,0,0);
+				transform.rotation.eulerAngles.y = 90;
 				break;
 			
 			case Direction.SOUTH:
 				normal = Vector3(0,0,-1);
+				transform.rotation.eulerAngles.y = 0;
 				break;
 				
 			case Direction.NORTH:
 				normal = Vector3(0,0,1);
+				transform.rotation.eulerAngles.y = 180;
 				break;
-				
-		}	
+		}
+		
 		
 		direction = inputDirection;
 		nextPosition += normal;
 	}
-	
+	switch (inputDirection)
+	{
+		case Direction.EAST:
+			transform.rotation.eulerAngles.y = 270;
+			Debug.Log("Turned East: " + transform.name);
+			break;
+			
+		case Direction.WEST:
+			transform.rotation.eulerAngles.y = 90;
+			Debug.Log("Turned West: " + transform.name);
+			break;
+		
+		case Direction.SOUTH:
+			transform.rotation.eulerAngles.y = 0;
+			Debug.Log("Turned South: " + transform.name);
+			break;
+			
+		case Direction.NORTH:
+			transform.rotation.eulerAngles.y = 180;
+			Debug.Log("Turned North: " + transform.name);
+			break;
+		default:
+			Debug.Log("Couldn't find direction");
+			break;
+	}
 	
 	transform.position = Vector3.Lerp(transform.position,nextPosition,Time.deltaTime*speed);
 }
@@ -340,10 +359,12 @@ private function SetNextPosition(position:Vector3,dir:Direction)
 	if(child!=null)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
-		tmpChild.SetNextPosition(nextPosition, direction);
+		tmpChild.SetNextPosition(nextPosition, inputDirection);
 	}
+	
 	nextPosition = position;
 	inputDirection = dir;
+	
 }
 
 
