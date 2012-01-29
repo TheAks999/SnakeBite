@@ -10,7 +10,7 @@ private var timestep : float = 0;
 
 function Start ()
 {
-	modelScript = GetComponent("SnakeModel");
+	modelScript = GetComponent(SnakeModel);
 }
 
 function Update () 
@@ -18,8 +18,6 @@ function Update ()
 	timestep += Time.deltaTime;
 	if (timestep > .5)
 	{
-		Debug.Log("Change direction");
-	
 		if (transform.position.x > 20 || transform.position.x < -20 || 
 			transform.position.z > 20 || transform.position.z < -20 )
 		{

@@ -41,10 +41,10 @@ function OnGUI()
 	
 	var logoRect:Rect = new Rect((Screen.width/2)-(width/2), top, width, height);
 	GUI.Label(logoRect, logo);
-	if(GUI.Button(Rect(logoRect.left, logoRect.bottom+buttonSpacing, 223, buttonHeight), "", startGUI))
+	if(GUI.Button(Rect(logoRect.xMin, logoRect.yMax+buttonSpacing, 223, buttonHeight), "", startGUI))
 	{
 		Application.LoadLevel(startLevel);
 	}
-	GUI.Button(Rect(logoRect.right-223, logoRect.bottom+buttonSpacing, 223, buttonHeight), "", exitGUI);
-	GUI.Button(Rect((Screen.width/2)-(72/2), logoRect.bottom+buttonSpacing, 72, buttonHeight), "", helpGUI);
+	GUI.Button(Rect(logoRect.xMax-223, logoRect.yMax+buttonSpacing, 223, buttonHeight), "", exitGUI);
+	GUI.Button(Rect((Screen.width/2)-(72/2), logoRect.yMax+buttonSpacing, 72, buttonHeight), "", helpGUI);
 }

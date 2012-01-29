@@ -9,7 +9,7 @@ private var growth : int = 0;
  
 function Start () 
 {
-	turnScript = GetComponent("SnakeModel");
+	turnScript = GetComponent(SnakeModel);
 }
 
 function Update () 
@@ -37,6 +37,6 @@ function Update ()
 
 function Setup()
 {
-	turnScript = GetComponent("SnakeModel");
+	turnScript = GetComponent(SnakeModel);
 	turnScript.MakeSnake(initialSnakeSize,Direction.EAST,criticalSectionSize);
 }
