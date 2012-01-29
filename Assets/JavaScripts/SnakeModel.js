@@ -359,6 +359,9 @@ public function CutHere()
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
 		Destroy(child.GetComponent("FollowerControl"));
 		child.AddComponent("AIControl");
+		child.AddComponent(Rigidbody);
+		child.rigidbody.useGravity = false;
+		
 		tmpChild.SetAsHead();
 		
 		
@@ -381,22 +384,27 @@ private function SetAsHead()
 	isHead = true;
 	parent = null;
 	childID = 0;
+	isCritical = true;
 	if(numberOfChildren > 0)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
-		tmpChild.SetHead(head, 1);
+		tmpChild.SetHead(head, 1,criticalSize-1);
 	}
 }
 
-private function SetHead(headObject:GameObject,idNumber:int)
+private function SetHead(headObject:GameObject,idNumber:int,criticalZone:int)
 {
 	childID = idNumber;
 	head = headObject;
+	if (criticalZone > 0)
+	{
+		isCritical = true;
+	}
 	
 	if(numberOfChildren > 0)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
-		tmpChild.SetHead(headObject, idNumber+1);
+		tmpChild.SetHead(headObject, idNumber+1, criticalZone-1);
 	}
 	
 }
