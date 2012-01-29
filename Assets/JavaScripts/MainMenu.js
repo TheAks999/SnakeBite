@@ -12,6 +12,7 @@ private var height:float;
 //Have to be floats for resizing purposes
 
 var top:int;
+var centerVertically;
 //Added for possible android use with scrollable menu
 
 function Start () 
@@ -38,7 +39,7 @@ function OnGUI()
 	
 	
 	var logoRect:Rect = new Rect((Screen.width/2)-(width/2), top, width, height);
-	GUI.Box(logoRect, logo);
+	GUI.Label(logoRect, logo);
 	if(GUI.Button(Rect(logoRect.left, logoRect.bottom+buttonSpacing, 223, buttonHeight), "", startGUI))
 	{
 		Application.LoadLevel("Basic");
