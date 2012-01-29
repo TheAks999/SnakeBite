@@ -4,6 +4,10 @@ var minimumScore : int = -1000;
 var maximumScore : int = 10000;
 private var score : int = startScore;
 
+function Start()
+{
+	DontDestroyOnLoad(gameObject);
+}
 
 
 function CombineScore(toAdd:int)

@@ -440,7 +440,7 @@ private function SetAsHead()
 	childID = 0;
 	isCritical = true;
 	
-	var score : ScoreWorth = GetComponent(ScoreModel);
+	var score : ScoreWorth = GetComponent(ScoreWorth);
 	
 	score.pointWorth = splitHeadPointWorth;
 	
@@ -461,7 +461,7 @@ private function SetHead(headObject:GameObject,idNumber:int,criticalZone:int)
 		isCritical = true;
 	}
 	
-	var score : ScoreWorth = GetComponent(ScoreModel);
+	var score : ScoreWorth = GetComponent(ScoreWorth);
 	
 	score.pointWorth = splitBodyPointWorth;
 	

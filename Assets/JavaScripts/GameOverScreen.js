@@ -16,4 +16,6 @@ function OnGUI()
 	{
 		Application.Quit();
 	}
+	var score:ScoreModel = GameObject.Find("ScoreObject").GetComponent("ScoreModel");
+	GUI.Label(goRect,"Your Score was:\n" + score.GetScore());
 }
