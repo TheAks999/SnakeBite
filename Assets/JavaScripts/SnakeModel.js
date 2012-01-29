@@ -191,7 +191,7 @@ function KillSnake()
 	Debug.Log("Killing Snake");
 	if (gameObject != head)
 	{
-		SetChildren();
+		ReCalculateChildren();
 	}
 	
 	KillHelper();
@@ -365,7 +365,7 @@ public function CutHere()
 		tmpChild.SetAsHead();
 		
 		
-		SetChildren();
+		ReCalculateChildren();
 		
 		
 		tmpChild.ForceTurn(true);
@@ -409,21 +409,21 @@ private function SetHead(headObject:GameObject,idNumber:int,criticalZone:int)
 	
 }
 
-private function SetChildren()
+private function ReCalculateChildren()
 {
 	var parentModel:SnakeModel = parent.GetComponent("SnakeModel");	
 	var headModel:SnakeModel = head.GetComponent("SnakeModel");
-	headModel.SetChildren(parentModel.ChildID());
+	headModel.ReCalculateChildren(parentModel.ChildID());
 }
 
-private function SetChildren(numChildren:int)
+private function ReCalculateChildren(numChildren:int)
 {
 	numberOfChildren = numChildren;
 	
 	if(numberOfChildren > 0)
 	{
 		var tmpChild:SnakeModel = child.GetComponent("SnakeModel");
-		tmpChild.SetChildren(numChildren-1);
+		tmpChild.ReCalculateChildren(numChildren-1);
 	}
 	else
 	{
