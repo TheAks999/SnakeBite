@@ -45,6 +45,9 @@ function OnGUI()
 	{
 		Application.LoadLevel(startLevel);
 	}
-	GUI.Button(Rect(logoRect.xMax-223, logoRect.yMax+buttonSpacing, 223, buttonHeight), "", exitGUI);
+	if(GUI.Button(Rect(logoRect.xMax-223, logoRect.yMax+buttonSpacing, 223, buttonHeight), "", exitGUI))
+	{
+		Application.Quit();
+	}
 	GUI.Button(Rect((Screen.width/2)-(72/2), logoRect.yMax+buttonSpacing, 72, buttonHeight), "", helpGUI);
 }
