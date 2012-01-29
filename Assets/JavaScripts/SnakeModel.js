@@ -7,6 +7,10 @@ var headMesh:GameObject;
 var bodyMesh:GameObject;
 var tailMesh:GameObject;
 
+var bodyPointWorth : int = 5;
+var headPointWorth : int = 100;
+
+
 //True if this object is the head
 private var isHead : boolean = true;
 
@@ -94,6 +98,7 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 	numberOfChildren = size-1;
 	childID = 0;
 	criticalSize = criticalSections;
+	GetComponent(ScoreWorth).pointWorth = headPointWorth;
 	
 	if (criticalSections <= 0)
 	{
@@ -131,6 +136,7 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 		//child = Instantiate( prefab ,childSpot,Quaternion.identity); 
 		child.AddComponent("SnakeModel");
 		child.AddComponent("FollowerControl");
+		child.AddComponent(ScoreWorth);
 		
 		if (!child.GetComponent(SphereCollider))
 		{
@@ -141,6 +147,7 @@ function MakeSnake(size:int,dir:Direction,criticalSections:int)
 		
 		child.transform.position = childSpot;
 		
+		child.GetComponent(ScoreWorth).pointWorth = bodyPointWorth;
 	
 		var childModel : SnakeModel = child.GetComponent("SnakeModel");
 		childModel.SetNextPosition(transform.position,direction);
@@ -197,13 +204,21 @@ private function MakeSnake(idNumber:int,size:int,dir:Direction,criticalSections:
 
 function KillSnake()
 {
+	
 	Debug.Log("Killing Snake");
+
+	
+	KillHelper();
+	
 	if (gameObject != head)
 	{
 		ReCalculateChildren();
 	}
 	
-	KillHelper();
+	if (gameObject.name	== "PlayerSnake")
+	{
+		//game over
+	}
 }
 
 private function KillHelper()
@@ -436,9 +451,16 @@ private function SetHead(headObject:GameObject,idNumber:int,criticalZone:int)
 
 private function ReCalculateChildren()
 {
-	var parentModel:SnakeModel = parent.GetComponent("SnakeModel");	
-	var headModel:SnakeModel = head.GetComponent("SnakeModel");
-	headModel.ReCalculateChildren(parentModel.ChildID());
+	if (parent == null)
+	{
+	
+	}
+	else
+	{
+		var parentModel:SnakeModel = parent.GetComponent("SnakeModel");	
+		var headModel:SnakeModel = head.GetComponent("SnakeModel");
+		headModel.ReCalculateChildren(parentModel.ChildID());
+	}
 }
 
 private function ReCalculateChildren(numChildren:int)
