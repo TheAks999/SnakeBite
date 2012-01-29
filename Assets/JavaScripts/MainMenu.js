@@ -4,6 +4,7 @@ var buttonHeight:int = 60;
 var buttonSpacing:int = 10;
 var startGUI:GUIStyle;
 var exitGUI:GUIStyle;
+var helpGUI:GUIStyle;
 
 
 private var width:float;
@@ -22,7 +23,7 @@ function Update ()
 {
 
 }
-
+ 
 function OnGUI()
 {
 	//Resizes logo if it gets to small for screen.
@@ -38,8 +39,10 @@ function OnGUI()
 	
 	var logoRect:Rect = new Rect((Screen.width/2)-(width/2), top, width, height);
 	GUI.Box(logoRect, logo);
-	var button:int = 0;
-	GUI.Button(Rect(0, buttonSpacing+logoRect.bottom+(buttonSpacing*button)+(buttonHeight*button), 223, buttonHeight), "", startGUI);
-	button++;
-	GUI.Button(Rect(logoRect.left+buttonSpacing, buttonSpacing+logoRect.bottom+(buttonSpacing*button)+(buttonHeight*button), logoRect.width-(buttonSpacing*2), buttonHeight), "Exit Game");
+	if(GUI.Button(Rect(logoRect.left, logoRect.bottom+buttonSpacing, 223, buttonHeight), "", startGUI))
+	{
+		Application.LoadLevel("Basic");
+	}
+	GUI.Button(Rect(logoRect.right-223, logoRect.bottom+buttonSpacing, 223, buttonHeight), "", exitGUI);
+	GUI.Button(Rect((Screen.width/2)-(72/2), logoRect.bottom+buttonSpacing, 72, buttonHeight), "", helpGUI);
 }
