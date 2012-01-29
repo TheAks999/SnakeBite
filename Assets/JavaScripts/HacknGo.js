@@ -1,8 +1,11 @@
+var playerObjectID : String = "PlayerSnake";
+var computerObjectID : String = "PlayerSnake";
+
 
 function Start()
 {
-	var player = GameObject.Find("PlayerSnake");
-	var computer = GameObject.Find("AISnake");
+	var player = GameObject.Find(playerObjectID);
+	var computer = GameObject.Find(computerObjectID);
 	
 	var playerControl : PlayerControls = player.GetComponent(PlayerControls);
 	var computerControl : AIControl = computer.GetComponent(AIControl);
