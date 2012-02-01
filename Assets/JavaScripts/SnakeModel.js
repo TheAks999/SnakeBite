@@ -224,6 +224,9 @@ function KillSnake()
 	
 	if (gameObject.name	== "PlayerSnake")
 	{
+		Debug.Log("LOST GAME");
+		var hud:Hud = GameObject.Find("ScoreObject").GetComponent("Hud");
+		hud.Lost();
 		//game over
 	}
 	
@@ -459,7 +462,6 @@ private function SetHead(headObject:GameObject,idNumber:int,criticalZone:int)
 	}
 	
 	var score : ScoreWorth = GetComponent(ScoreWorth);
-	
 	
 	score.pointWorth = splitBodyPointWorth;
 	

@@ -6,8 +6,7 @@ private var score : int = startScore;
 
 function Start()
 {
-	//DontDestroyOnLoad(gameObject.transform);
-	
+	DontDestroyOnLoad(gameObject);
 }
 
 

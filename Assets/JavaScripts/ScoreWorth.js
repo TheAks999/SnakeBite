@@ -5,25 +5,47 @@ var playerObjectName : String = "PlayerSnake";
 
 function OnDestroy()
 {
-	if (gameObject.name != playerObjectName)
+	var hud:Hud = GameObject.Find("ScoreObject").GetComponent("Hud");
+	if(!hud.IsLost())
 	{
-	
-		var snakeModel : SnakeModel = GetComponent(SnakeModel);
-		
-		if (snakeModel)
+		if (gameObject.name != playerObjectName)
 		{
-			if (snakeModel.GetHead())
+		
+			var snakeModel : SnakeModel = GetComponent(SnakeModel);
+			
+			if (snakeModel)
 			{
-				if (snakeModel.name == playerObjectName)
+				if (snakeModel.GetHead())
 				{
-				return;
+					if (snakeModel.name == playerObjectName)
+					{
+					return;
+					}
+				}
+				else
+				{	
+					Debug.LogWarning("This snake has no head");
+					//return;
 				}
 			}
-			else
-			{	
-				//Debug.LogWarning("This snake has no head");
-				//return;
+			
+			var scoreObject : GameObject = GameObject.Find("ScoreObject");
+			
+			if (!scoreObject)
+			{
+				Debug.LogError("No Score Object");
+				return;
 			}
+			
+			var scoreModel : ScoreModel	= scoreObject.GetComponent(ScoreModel);
+			
+			if (!scoreModel)
+			{
+				Debug.LogError("No Score Model");
+				return false;
+			}
+			
+			scoreModel.CombineScore(pointWorth);
 		}
 		
 		var scoreObject : GameObject = GameObject.Find("ScoreObject");

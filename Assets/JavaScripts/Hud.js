@@ -14,7 +14,6 @@ function OnGUI()
 		Application.LoadLevel("GameOver");
 	}else{
 		//Draw Hud
-		
 		var scoreObject : GameObject = GameObject.Find("ScoreObject");
 
 		if (!scoreObject)
