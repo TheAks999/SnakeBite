@@ -21,7 +21,7 @@ function OnDestroy()
 			}
 			else
 			{	
-				Debug.LogWarning("This snake has no head");
+				//Debug.LogWarning("This snake has no head");
 				//return;
 			}
 		}
@@ -30,7 +30,7 @@ function OnDestroy()
 		
 		if (!scoreObject)
 		{
-			Debug.LogError("No Score Object");
+			//Debug.LogError("No Score Object");
 			return;
 		}
 		
