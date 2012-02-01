@@ -48,22 +48,5 @@ function OnDestroy()
 			scoreModel.CombineScore(pointWorth);
 		}
 		
-		var scoreObject : GameObject = GameObject.Find("ScoreObject");
-		
-		if (!scoreObject)
-		{
-			//Debug.LogError("No Score Object");
-			return;
-		}
-		
-		var scoreModel : ScoreModel	= scoreObject.GetComponent(ScoreModel);
-		
-		if (!scoreModel)
-		{
-			Debug.LogError("No Score Model");
-			return false;
-		}
-		
-		scoreModel.CombineScore(pointWorth);
 	}
 }
