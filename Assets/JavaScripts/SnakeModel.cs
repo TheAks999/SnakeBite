@@ -4,11 +4,11 @@ using System.Collections;
 
 public class SnakeModel : MonoBehaviour 
 {
+	public enum ControlType {PLAYERKEYBOARD,AI};
+	public ControlType controlType = ControlType.AI;
+	
 	public int numberOfSegments = 10;
 	public int criticalLength = 3;
-	
-    //public Controller controller = null;
-	public GameObject controllerObject = null;
 	
 	private GameObject head = null;
 	private GameObject [] snake = null;
@@ -29,6 +29,9 @@ public class SnakeModel : MonoBehaviour
 	// Use this for initialization
 	public void Start () 
 	{
+		((MeshFilter)GetComponent("MeshFilter")).mesh = null;
+		((MeshRenderer)GetComponent("MeshRenderer")).material = null;
+	
 		if (snake == null)
 		{
 			BuildSnake();
@@ -67,8 +70,16 @@ public class SnakeModel : MonoBehaviour
 		head.AddComponent("MeshRenderer");
 		
 		
-		Controller controller = (Controller) controllerObject.GetComponent("Controller");
-		((Controller)head.AddComponent(controller.name)).SetMover(mover);
+		if(controlType == SnakeModel.ControlType.AI)
+		{
+			((Controller)head.AddComponent("AIController")).SetMover(mover);
+		}
+		else if (controlType == SnakeModel.ControlType.PLAYERKEYBOARD)
+		{
+			((Controller)head.AddComponent("PlayerController")).SetMover(mover);
+		}
+		
+		
 		
 		piece.MakeHead();	
 	
