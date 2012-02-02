@@ -11,32 +11,30 @@ public class ScoreWorth : MonoBehaviour
 	void Start()
 	{
 		GameObject scoreObject = GameObject.Find("ScoreObject");
-		hud = scoreObject.GetComponent("Hud");
-		score = scoreObject.GetComponent("Score");
+		hud = (Hud) scoreObject.GetComponent("Hud");
+		score = (Score) scoreObject.GetComponent("Score");
 	}
 	
 	
 	void OnDestroy()
 	{
-		if(!hud.IsLost())
+		if(!hud.IsGameOver())
 		{
-			if (gameObject.name != playerObjectName)
-			{
 			
-				SnakePiece thisPiece = (SnakePiece) GetComponent("SnakePiece");
-				
-				if (snakePiece)
+			SnakePiece thisPiece = (SnakePiece) GetComponent("SnakePiece");
+			
+			if (thisPiece)
+			{
+				SnakeModel model = thisPiece.GetModel();
+				if (model.controlType == SnakeModel.ControlType.PLAYERKEYBOARD)
 				{
-					SnakeModel model = snakePiece.GetModel();
-					if (model.controlType == SnakeModel.ControlType.PLAYERKEYBOARD)
-					{
-						return;
-					}
+					return;
 				}
-				
-				score.CombineScore(pointWorth);
 			}
 			
+			score.CombineScore(worth);
+		
+		
 		}
 	}
 

@@ -1,4 +1,5 @@
-#pragma strict
+/*#pragma strict
+
 
 var win:boolean = false;
 var loss:boolean = false;
@@ -41,4 +42,4 @@ public function Won()
 public function Lost()
 {
 	loss = true;
-}
+}*/
