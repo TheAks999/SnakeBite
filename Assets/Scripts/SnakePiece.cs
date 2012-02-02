@@ -22,6 +22,10 @@ public class SnakePiece : MonoBehaviour {
 	public SnakeModel snakeModel = null;
 	public PieceType pieceType = PieceType.NONE;
 	
+	public SnakeModel GetModel()
+	{
+		return snakeModel;
+	}
 	
 	public GameObject AddChild(Direction childDirection)
 	{
