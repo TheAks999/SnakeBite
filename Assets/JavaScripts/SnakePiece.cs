@@ -49,6 +49,9 @@ public class SnakePiece : MonoBehaviour {
 			Movement mover = (Movement) child.AddComponent("Movement");
 			mover.initialDirection = childDirection;
 			
+			//Place AI
+			( (FollowerController) child.AddComponent("FollowerController")).SetParentMover((Movement) GetComponent("Movement")); 
+			
 			
 			//initial starting location - assuming an absolute translation
 			switch(childDirection)

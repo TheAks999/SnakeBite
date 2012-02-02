@@ -215,10 +215,10 @@ public class Movement : MonoBehaviour
 						case Direction.EAST:
 							break;
 						case Direction.WEST	:	
-							//transform.Rotate(0,180,0);
+							transform.Rotate(0,180,0);
 							break;
 						case Direction.SOUTH :	
-							transform.Rotate(0,90,0);
+							transform.Rotate(0,-90,0);
 							break;
 						case Direction.NORTH : 
 							transform.Rotate(0,90,0);
@@ -232,7 +232,7 @@ public class Movement : MonoBehaviour
 					switch(currentDirection)
 					{
 						case Direction.EAST:
-							//transform.Rotate(0,180,0);
+							transform.Rotate(0,180,0);
 							break;
 						case Direction.WEST	:	
 							break;
@@ -240,7 +240,7 @@ public class Movement : MonoBehaviour
 							transform.Rotate(0,90,0);
 							break;
 						case Direction.NORTH : 
-							transform.Rotate(0,90,0);
+							transform.Rotate(0,-90,0);
 							break;
 						case Direction.NONE :
 							break;
@@ -251,10 +251,10 @@ public class Movement : MonoBehaviour
 					switch(currentDirection)
 					{
 						case Direction.EAST:
-							transform.Rotate(0,-90,0);
+							transform.Rotate(0,90,0);
 							break;
 						case Direction.WEST	:	
-							transform.Rotate(0,90,0);
+							transform.Rotate(0,-90,0);
 							break;
 						case Direction.SOUTH :	
 							break;
@@ -270,10 +270,10 @@ public class Movement : MonoBehaviour
 					switch(currentDirection)
 					{
 						case Direction.EAST:
-							transform.Rotate(0,90,0);
+							transform.Rotate(0,-90,0);
 							break;
 						case Direction.WEST	:	
-							transform.Rotate(0,-90,0);
+							transform.Rotate(0,90,0);
 							break;
 						case Direction.SOUTH :	
 							transform.Rotate(0,180,0);
