@@ -70,6 +70,9 @@ public class SnakeModel : MonoBehaviour
 		head.AddComponent("MeshRenderer");
 		
 		
+
+		
+		
 		if(controlType == SnakeModel.ControlType.AI)
 		{
 			((Controller)head.AddComponent("AIController")).SetMover(mover);
@@ -78,6 +81,13 @@ public class SnakeModel : MonoBehaviour
 		{
 			((Controller)head.AddComponent("PlayerController")).SetMover(mover);
 		}
+		
+		//Collision stuff
+		SphereCollider collider = (SphereCollider) head.AddComponent("SphereCollider");
+		collider.radius = 0.1f;
+		collider.isTrigger = true;
+		Rigidbody rigid = (Rigidbody) head.AddComponent("Rigidbody");
+		rigid.useGravity = false;
 		
 		
 		

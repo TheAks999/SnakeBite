@@ -56,6 +56,13 @@ public class SnakePiece : MonoBehaviour {
 			//Place AI
 			( (FollowerController) child.AddComponent("FollowerController")).SetParentMover((Movement) GetComponent("Movement")); 
 			
+			//Collision Stuff
+			SphereCollider collider = (SphereCollider) child.AddComponent("SphereCollider");
+			collider.radius = 0.1f;
+			collider.isTrigger = true;
+			
+			Rigidbody rigid = (Rigidbody) child.AddComponent("Rigidbody");
+			rigid.useGravity = false;
 			
 			//initial starting location - assuming an absolute translation
 			switch(childDirection)
