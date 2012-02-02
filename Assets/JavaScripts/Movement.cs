@@ -3,12 +3,16 @@ using System.Collections;
 
 public enum Direction {NORTH, SOUTH, EAST, WEST, NONE};
 
-public class Movement : MonoBehaviour {
+public class Movement : MonoBehaviour 
+{
 	
 	public float speed = 10;
 	public Direction initialDirection = Direction.EAST;
 	
-	private float percentMoved = 0;
+	public float percentMoved = 0;
+	
+	public Vector3 nextPosition;
+	public Vector3 prevPosition;
 	
 	private Direction currentDirection;
 	private Direction nextDirection;
@@ -17,15 +21,35 @@ public class Movement : MonoBehaviour {
 	{
 	}
 	
-	Movement(Direction initDirection)
-	{
-		initialDirection = initDirection;
-	}
 	
 	public void Start()
 	{
 		currentDirection = initialDirection;
 		nextDirection = initialDirection;
+		prevPosition = transform.position;
+			
+		switch (initialDirection)
+		{
+			case Direction.EAST:
+			nextPosition = transform.position + Vector3.right;
+			transform.Rotate(0,-90,0);
+			break;
+			case Direction.WEST:
+			nextPosition = transform.position + Vector3.left;
+			transform.Rotate(0,90,0);
+			break;
+			case Direction.NORTH:
+			nextPosition = transform.position + Vector3.forward;
+			transform.Rotate(0,180,0);
+			break;
+			case Direction.SOUTH:
+			nextPosition = transform.position + Vector3.back;
+			break;
+			case Direction.NONE:
+			nextPosition = transform.position;
+			break;
+		}
+		
 	}
 	
 	//Directional Functions
@@ -46,6 +70,7 @@ public class Movement : MonoBehaviour {
 	
 	public void TurnLeft()
 	{
+	
 		switch (currentDirection)
 		{
 			case Direction.EAST:
@@ -59,6 +84,9 @@ public class Movement : MonoBehaviour {
 				break;
 			case Direction.SOUTH:
 				nextDirection = Direction.EAST;
+				break;
+			case Direction.NONE:
+				nextDirection = Direction.WEST;
 				break;
 		}
 	}
@@ -79,6 +107,9 @@ public class Movement : MonoBehaviour {
 			case Direction.SOUTH:
 				nextDirection = Direction.WEST;
 				break;
+			case Direction.NONE:
+				nextDirection = Direction.EAST;
+				break;
 		}
 	}
 	
@@ -95,53 +126,71 @@ public class Movement : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
 		
-		Vector3 nextPosition;
-		
-		switch(currentDirection)
+		if ( percentMoved >= 1 && currentDirection != Direction.NONE)
 		{
-			case Direction.EAST:
-					nextPosition = new Vector3(
-			                        Mathf.Floor(transform.position.x + 1),
-			                        transform.position.y,
-									transform.position.z);
-					break;
-					
-				case Direction.WEST:
-					nextPosition = new Vector3(
-			                       Mathf.Ceil(transform.position.x - 1),
-			                       transform.position.y,
-			                       transform.position.z);
-					break;
-				
-				case Direction.SOUTH:
-					nextPosition = new Vector3(
-			                       transform.position.x,
-			                       transform.position.y,
-			                       Mathf.Ceil(transform.position.z - 1));
-					break;
-					
-				case Direction.NORTH:
-					nextPosition = new Vector3(
-			                       transform.position.x,
-			                       transform.position.y,
-			                       Mathf.Floor(transform.position.z + 1));
-					break;
+		
+			percentMoved = 0;
 			
-				default:
-					nextPosition = new Vector3(
-			                       transform.position.x,
-			                       transform.position.y,
-			                       transform.position.z);
-			break;
-		}
-		
-		
-		
-		if ( VectorEqual(transform.position, nextPosition, 0.001f) )
-		{
+			switch(nextDirection)
+			{
+				case Direction.EAST:
+						nextPosition = new Vector3(
+				                        Mathf.Round(transform.position.x + 1),
+				                        Mathf.Round(transform.position.y),
+										Mathf.Round(transform.position.z));
+						prevPosition = new Vector3(
+				                        Mathf.Round(transform.position.x),
+				                        Mathf.Round(transform.position.y),
+										Mathf.Round(transform.position.z));
+							
+					break;
+						
+					case Direction.WEST:
+						nextPosition = new Vector3(
+				                       Mathf.Round(transform.position.x - 1),
+				                        Mathf.Round(transform.position.y),
+										Mathf.Round(transform.position.z));
+						prevPosition = new Vector3(
+				                       Mathf.Round(transform.position.x),
+				                        Mathf.Round(transform.position.y),
+										Mathf.Round(transform.position.z));
+						break;
+					
+					case Direction.SOUTH:
+						nextPosition = new Vector3(
+				                       Mathf.Round(transform.position.x),
+				                       Mathf.Round(transform.position.y),
+				                       Mathf.Round(transform.position.z - 1));
+						prevPosition = new Vector3(
+				                       Mathf.Round(transform.position.x),
+				                       Mathf.Round(transform.position.y),
+				                       Mathf.Round(transform.position.z));
+						break;
+						
+					case Direction.NORTH:
+						nextPosition = new Vector3(
+				                       Mathf.Round(transform.position.x),
+				                       Mathf.Round(transform.position.y),
+				                       Mathf.Round(transform.position.z + 1));
+						prevPosition = new Vector3(
+				                       Mathf.Round(transform.position.x),
+				                       Mathf.Round(transform.position.y),
+				                       Mathf.Round(transform.position.z));
+						break;
+				
+					default:
+						prevPosition = nextPosition = new Vector3(
+				                       Mathf.Round(transform.position.x),
+				                       Mathf.Round(transform.position.y),
+									   Mathf.Round(transform.position.z));
+				break;
+			}
+			
+				
+				
 			/*if (forceTurn > 0)
 			{
 				if (forceTurnDirection == true)
@@ -156,27 +205,84 @@ public class Movement : MonoBehaviour {
 			}*/
 			
 			
-			//transform.position.x = Mathf.Round(transform.position.x);
-			//transform.position.y = Mathf.Round(transform.position.y);
-			//transform.position.z = Mathf.Round(transform.position.z);
-			
 			
 			switch (nextDirection)
 			{
+				
 				case Direction.EAST:
-					transform.RotateAround(Vector3.up,270);
+					switch(currentDirection)
+					{
+						case Direction.EAST:
+							break;
+						case Direction.WEST	:	
+							transform.Rotate(0,180,0);
+							break;
+						case Direction.SOUTH :	
+							transform.Rotate(0,90,0);
+							break;
+						case Direction.NORTH : 
+							transform.Rotate(0,-90,0);
+							break;
+						case Direction.NONE :
+							break;
+					}
 					break;
 					
 				case Direction.WEST:
-					transform.RotateAround(Vector3.up,90);
+					switch(currentDirection)
+					{
+						case Direction.EAST:
+							transform.Rotate(0,180,0);
+							break;
+						case Direction.WEST	:	
+							break;
+						case Direction.SOUTH :	
+							transform.Rotate(0,-90,0);
+							break;
+						case Direction.NORTH : 
+							transform.Rotate(0,90,0);
+							break;
+						case Direction.NONE :
+							break;
+					}
 					break;
 				
 				case Direction.SOUTH:
-					transform.RotateAround(Vector3.up,0);
+					switch(currentDirection)
+					{
+						case Direction.EAST:
+							transform.Rotate(0,-90,0);
+							break;
+						case Direction.WEST	:	
+							transform.Rotate(0,90,0);
+							break;
+						case Direction.SOUTH :	
+							break;
+						case Direction.NORTH : 
+							transform.Rotate(0,180,0);
+							break;
+						case Direction.NONE :
+							break;
+					}
 					break;
 					
 				case Direction.NORTH:
-					transform.RotateAround(Vector3.up,180);
+					switch(currentDirection)
+					{
+						case Direction.EAST:
+							transform.Rotate(0,90,0);
+							break;
+						case Direction.WEST	:	
+							transform.Rotate(0,-90,0);
+							break;
+						case Direction.SOUTH :	
+							transform.Rotate(0,180,0);
+							break;
+						case Direction.NORTH : 
+							break;
+						case Direction.NONE :
+							break;
+					}
 					break;
 			}
 			
@@ -184,7 +290,8 @@ public class Movement : MonoBehaviour {
 			currentDirection = nextDirection;
 		}
 		
-		transform.position = Vector3.Lerp(transform.position,nextPosition,Time.deltaTime*speed);
+		percentMoved += Time.deltaTime*speed*0.5f;	
+		transform.position = Vector3.Lerp(prevPosition,nextPosition,percentMoved);
 	}
 	
 	

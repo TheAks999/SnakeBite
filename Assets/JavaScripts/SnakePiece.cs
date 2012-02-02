@@ -25,7 +25,7 @@ public class SnakePiece : MonoBehaviour {
 	
 	public GameObject AddChild(Direction childDirection)
 	{
-		if (HasChild())
+		if (!HasChild())
 		{
 			child = new GameObject();
 			
@@ -78,7 +78,7 @@ public class SnakePiece : MonoBehaviour {
 			{
 				MakeBody();
 			}
-			
+			Debug.Log("Built Child at " + child.transform);
 		}
 		
 		return child;

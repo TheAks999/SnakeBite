@@ -1,28 +1,33 @@
 using UnityEngine;
 using System.Collections;
 
+
 public class SnakeModel : MonoBehaviour 
 {
-	int numberOfSegments = 10;
-	int criticalLength = 3;
+	public int numberOfSegments = 10;
+	public int criticalLength = 3;
 	
-    Controller controller = null;
+    //public Controller controller = null;
+	public GameObject controllerObject = null;
 	
-	GameObject head = null;
-	GameObject [] snake = null;
+	private GameObject head = null;
+	private GameObject [] snake = null;
 	
-	Mesh headMesh = null;
-	Mesh bodyMesh = null;
-	Mesh tailMesh = null;
+	public Mesh headMesh = null;
+	public Mesh bodyMesh = null;
+	public Mesh tailMesh = null;
 	
-	Material headMat = null;
-	Material bodyMat = null;
-	Material tailMat = null;
+	public Material headMat = null;
+	public Material bodyMat = null;
+	public Material tailMat = null;
 	
-	Direction initialDirection = Direction.EAST;
+	public Direction initialDirection = Direction.EAST;
+	
+	
+	private int numberOfSteps = 0;
 	
 	// Use this for initialization
-	void Start () 
+	public void Start () 
 	{
 		if (snake == null)
 		{
@@ -30,7 +35,7 @@ public class SnakeModel : MonoBehaviour
 		}
 	}
 	
-	void BuildSnake()
+	public void BuildSnake()
 	{
 		snake = new GameObject[numberOfSegments];
 		head = new GameObject();
@@ -61,22 +66,57 @@ public class SnakeModel : MonoBehaviour
 		head.AddComponent("MeshFilter");
 		head.AddComponent("MeshRenderer");
 		
+		
+		Controller controller = (Controller) controllerObject.GetComponent("Controller");
+		((Controller)head.AddComponent(controller.name)).SetMover(mover);
+		
 		piece.MakeHead();	
 	
-		GameObject child = gameObject;
+		GameObject child = head;
 		for (int i = 1; i < numberOfSegments; i++)
 		{
-			
+			Debug.Log("Test " + i ); 
 			child = ( (SnakePiece) child.GetComponent("SnakePiece") ).AddChild(initialDirection);
 			snake[i] = child;
 		}
 	}
 	
 	
-	
-	// Update is called once per frame
-	void Update () 
+	public void Grow(int lengthToAdd)
 	{
 	
+		GameObject [] tempList = new GameObject[numberOfSegments + lengthToAdd];
+		
+		Debug.Log("growing");
+		
+		for (int i = 0; i < numberOfSegments; i++)
+		{
+			tempList[i] = snake[i];
+		}
+		
+		for (int i = 0; i < lengthToAdd; i++)
+		{
+			GameObject last = (GameObject) tempList[numberOfSegments-1];
+			SnakePiece piece = (SnakePiece) last.GetComponent("SnakePiece");
+			Movement movement = (Movement) last.GetComponent("Movement");			
+			
+			tempList[numberOfSegments] = piece.AddChild( movement.GetCurrentDirection() );
+			numberOfSegments++;
+			
+		}
+		snake = tempList;
 	}
+	
+	public void FixedUpdate()
+	{
+		numberOfSteps++;
+		
+		if (numberOfSteps >= 50)
+		{
+			numberOfSteps = 0;
+			Grow(1);
+		
+		}
+	}
+	
 }
