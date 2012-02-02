@@ -90,13 +90,11 @@ public class SnakeModel : MonoBehaviour
 		rigid.useGravity = false;
 		
 		
-		
 		piece.MakeHead();	
 	
 		GameObject child = head;
 		for (int i = 1; i < numberOfSegments; i++)
 		{
-			Debug.Log("Test " + i ); 
 			child = ( (SnakePiece) child.GetComponent("SnakePiece") ).AddChild(initialDirection);
 			snake[i] = child;
 		}
@@ -108,7 +106,6 @@ public class SnakeModel : MonoBehaviour
 	
 		GameObject [] tempList = new GameObject[numberOfSegments + lengthToAdd];
 		
-		Debug.Log("growing");
 		
 		for (int i = 0; i < numberOfSegments; i++)
 		{
@@ -132,7 +129,7 @@ public class SnakeModel : MonoBehaviour
 	{
 		numberOfSteps++;
 		
-		if (numberOfSteps >= 50)
+		if (numberOfSteps >= 100)
 		{
 			numberOfSteps = 0;
 			Grow(1);

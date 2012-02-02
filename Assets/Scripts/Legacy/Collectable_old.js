@@ -1,4 +1,6 @@
 
+var onCollectGrowAmmount : int = 0;
+
 function CollectObject()
 {
 	Destroy(gameObject);
@@ -8,5 +10,6 @@ function CollectObject()
 
 function OnTriggerEnter(collider:Collider)
 {
+
 	Destroy(gameObject);
 }

@@ -60,7 +60,6 @@ public class SnakePiece : MonoBehaviour {
 			SphereCollider collider = (SphereCollider) child.AddComponent("SphereCollider");
 			collider.radius = 0.1f;
 			collider.isTrigger = true;
-			
 			Rigidbody rigid = (Rigidbody) child.AddComponent("Rigidbody");
 			rigid.useGravity = false;
 			
@@ -92,7 +91,6 @@ public class SnakePiece : MonoBehaviour {
 			{
 				MakeBody();
 			}
-			Debug.Log("Built Child at " + child.transform);
 		}
 		
 		return child;
