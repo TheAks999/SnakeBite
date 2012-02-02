@@ -17,6 +17,23 @@ public class Movement : MonoBehaviour
 	private Direction currentDirection;
 	private Direction nextDirection;
 	
+	private bool isMoving = true;
+	
+	public bool IsMoving()
+	{
+		return isMoving;
+	}
+	
+	public void StartMovement()
+	{
+		isMoving = true;
+	}
+	
+	public void StopMovement()
+	{
+		isMoving = false;
+	}
+	
 	Movement()
 	{
 	}
@@ -290,8 +307,11 @@ public class Movement : MonoBehaviour
 			currentDirection = nextDirection;
 		}
 		
-		percentMoved += Time.deltaTime*speed*0.5f;	
-		transform.position = Vector3.Lerp(prevPosition,nextPosition,percentMoved);
+		if(isMoving)
+		{
+			percentMoved += Time.deltaTime*speed*0.5f;	
+			transform.position = Vector3.Lerp(prevPosition,nextPosition,percentMoved);
+		}
 	}
 	
 	

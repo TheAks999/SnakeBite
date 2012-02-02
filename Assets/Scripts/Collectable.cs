@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class NewBehaviourScript : MonoBehaviour 
+public class Collectable : MonoBehaviour 
 {
 	public int onCollectGrowAmmount = 0;
 	
@@ -11,8 +11,11 @@ public class NewBehaviourScript : MonoBehaviour
 		if (piece)
 		{
 			if (onCollectGrowAmmount > 0)
+			{
+				Debug.Log("Should grow");
 				piece.GetModel().Grow(onCollectGrowAmmount);
-		
+			}
+			
 			Destroy(gameObject);
 		}
 	}

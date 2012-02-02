@@ -23,6 +23,8 @@ public class SnakeModel : MonoBehaviour
 	
 	public Direction initialDirection = Direction.EAST;
 	
+	private bool isGrowing = false;
+	
 	
 	private int numberOfSteps = 0;
 	
@@ -36,6 +38,11 @@ public class SnakeModel : MonoBehaviour
 		{
 			BuildSnake();
 		}
+	}
+	
+	public bool IsGrowing()
+	{
+		return isGrowing;
 	}
 	
 	public void BuildSnake()
@@ -103,7 +110,16 @@ public class SnakeModel : MonoBehaviour
 	
 	public void Grow(int lengthToAdd)
 	{
-	
+		while (isGrowing){}
+		isGrowing = true;
+		
+		
+		if (lengthToAdd	< 1)
+			return;
+		
+		
+		Debug.Log("Grow by: " + lengthToAdd);
+		
 		GameObject [] tempList = new GameObject[numberOfSegments + lengthToAdd];
 		
 		
@@ -123,6 +139,7 @@ public class SnakeModel : MonoBehaviour
 			
 		}
 		snake = tempList;
+		isGrowing = false;
 	}
 	
 	public void FixedUpdate()
