@@ -1,4 +1,4 @@
-#pragma strict
+/*#pragma strict
 
 private var modelScript:SnakeModel; 
 
@@ -55,4 +55,4 @@ function Setup()
 {
 	modelScript = GetComponent(SnakeModel);
 	modelScript.MakeSnake(initialSnakeSize,Direction.EAST,criticalSectionSize);
-}
+}*/

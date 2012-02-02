@@ -1,4 +1,4 @@
-var modelScript:SnakeModel; 
+/*var modelScript:SnakeModel; 
 
 function Start ()
 {
@@ -8,4 +8,4 @@ function Start ()
 function Update () 
 {
 	modelScript.UpdatePosition();
-}	
+}	*/

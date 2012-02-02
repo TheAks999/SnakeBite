@@ -1,3 +1,4 @@
+/*
 #pragma strict
 enum Direction {NORTH, SOUTH, EAST, WEST}
 
@@ -481,7 +482,7 @@ private function ReCalculateChildren()
 	
 	}
 	else
-	{
+	{ 
 		var parentModel:SnakeModel = parent.GetComponent("SnakeModel");	
 		var headModel:SnakeModel = head.GetComponent("SnakeModel");
 		headModel.ReCalculateChildren(parentModel.ChildID());
@@ -518,4 +519,4 @@ public function Grow(numChildrenToAdd:int)
 	
 	tempModel.MakeSnake(tempModel.ChildID(),numChildrenToAdd,tempModel.CurrentDirection(),0,criticalSize,tempChild,tempModel.GetHead());
 }
-
+*/

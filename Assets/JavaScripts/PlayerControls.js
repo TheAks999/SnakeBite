@@ -1,3 +1,4 @@
+/*
 #pragma strict
 private var turnScript:SnakeModel;
 
@@ -40,3 +41,4 @@ function Setup()
 	turnScript = GetComponent(SnakeModel);
 	turnScript.MakeSnake(initialSnakeSize,Direction.EAST,criticalSectionSize);
 }
+*/

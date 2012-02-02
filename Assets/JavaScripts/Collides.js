@@ -1,3 +1,4 @@
+/*
 #pragma strict
 
 function OnTriggerEnter (other : Collider) 
@@ -18,3 +19,4 @@ function OnTriggerEnter (other : Collider)
     	}
     }
 }
+*/

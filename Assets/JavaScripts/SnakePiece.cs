@@ -1,39 +1,42 @@
 using UnityEngine;
 using System.Collections;
 
-enum PieceType {HEAD,BODY,TAIL,NONE};
+public enum PieceType {HEAD,BODY,TAIL,NONE};
 
 public class SnakePiece : MonoBehaviour {
 	
-	GameObject head = null;
-	GameObject parent = null;
-	GameObject child = null;
 	
-	Mesh headMesh = null;
-	Mesh bodyMesh = null;
-	Mesh tailMesh = null;
+	public GameObject head = null;
+	public GameObject parent = null;
+	public GameObject child = null;
 	
-	Material headMat = null;
-	Material bodyMat = null;
-	Material tailMat = null;
+	public Mesh headMesh = null;
+	public Mesh bodyMesh = null;
+	public Mesh tailMesh = null;
+	
+	public Material headMat = null;
+	public Material bodyMat = null;
+	public Material tailMat = null;
 	
 	
-	SnakeModel snakeModel = null;
-	PieceType pieceType = NONE;
+	public SnakeModel snakeModel = null;
+	public PieceType pieceType = PieceType.NONE;
 	
-	GameObject AddChild()
+	
+	public GameObject AddChild(Direction childDirection)
 	{
 		if (HasChild())
 		{
 			child = new GameObject();
-			SnakePiece piece = new SnakePiece();
 			
+			//Construct the piece
+			SnakePiece piece = (SnakePiece) child.AddComponent("SnakePiece");
 			piece.parent = gameObject;
 			piece.snakeModel = snakeModel;
 			piece.head = head;
 			
 			
-			//Rendering transfer
+				//Rendering transfer
 			piece.headMesh = headMesh;
 			piece.bodyMesh = bodyMesh;
 			piece.tailMesh = tailMesh;
@@ -42,11 +45,32 @@ public class SnakePiece : MonoBehaviour {
 			piece.bodyMat = bodyMat;
 			piece.tailMat = tailMat;
 			
+			//Construct the mover
+			Movement mover = (Movement) child.AddComponent("Movement");
+			mover.initialDirection = childDirection;
+			
+			
+			//initial starting location - assuming an absolute translation
+			switch(childDirection)
+			{
+				case Direction.EAST	:
+					child.transform.Translate(transform.position + Vector3.left);
+				break;
+				case Direction.WEST	:
+					child.transform.Translate(transform.position + Vector3.right);
+				break;
+				case Direction.NORTH :
+					child.transform.Translate(transform.position + Vector3.back);
+				break;
+				case Direction.SOUTH :
+					child.transform.Translate(transform.position + Vector3.forward);
+				break;
+			}
 			
 			//constuct the child
-			child.AddComponent(piece);
-			child.AddComponent(MeshFilter);
-			child.AddComponent(MeshRenderer);
+			
+			child.AddComponent("MeshFilter");
+			child.AddComponent("MeshRenderer");
 			
 			//finishing touches
 			piece.MakeTail();
@@ -60,7 +84,7 @@ public class SnakePiece : MonoBehaviour {
 		return child;
 	}
 	
-	bool HasParent()
+	public bool HasParent()
 	{
 		if (parent == null)
 		{
@@ -69,7 +93,17 @@ public class SnakePiece : MonoBehaviour {
 		return true;
 	}
 	
-	bool IsHead()
+	public bool HasChild()
+	{
+		if (child == null)
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public bool IsHead()
 	{
 		if (head == gameObject)
 			return true;
@@ -77,49 +111,46 @@ public class SnakePiece : MonoBehaviour {
 		return false;
 	}
 	
-	bool IsTail()
+	public bool IsTail()
 	{
-		if (tail == gameObject)
-			return true;
-		
-		return false;
+		return !HasChild();
 	}
 	
-	void MakeHead()
+	public void MakeHead()
 	{
 		parent = null;
 		head = gameObject;
-		pieceType = HEAD;
+		pieceType = PieceType.HEAD;
 		
 		
-		MeshFilter meshFilter = GetComponent(MeshFilter);
-		MeshRenderer meshRenderer = GetComponent(MeshRenderer);
+		MeshFilter meshFilter = (MeshFilter) GetComponent("MeshFilter");
+		MeshRenderer meshRenderer = (MeshRenderer) GetComponent("MeshRenderer");
 		
 		meshFilter.mesh = headMesh;
 		meshRenderer.material = headMat;
 		
 	}
 	
-	void MakeBody()
+	public void MakeBody()
 	{
-		pieceType = BODY;
+		pieceType = PieceType.BODY;
 		
 		
-		MeshFilter meshFilter = GetComponent(MeshFilter);
-		MeshRenderer meshRenderer = GetComponent(MeshRenderer);
+		MeshFilter meshFilter = (MeshFilter) GetComponent("MeshFilter");
+		MeshRenderer meshRenderer = (MeshRenderer) GetComponent("MeshRenderer");
 		
 		meshFilter.mesh = bodyMesh;
 		meshRenderer.material = bodyMat;
 	}
 	
-	void MakeTail()
+	public void MakeTail()
 	{
 		child = null;
-		pieceType = TAIL;
+		pieceType = PieceType.TAIL;
 		
 		
-		MeshFilter meshFilter = GetComponent(MeshFilter);
-		MeshRenderer meshRenderer = GetComponent(MeshRenderer);
+		MeshFilter meshFilter = (MeshFilter) GetComponent("MeshFilter");
+		MeshRenderer meshRenderer = (MeshRenderer) GetComponent("MeshRenderer");
 		
 		meshFilter.mesh = tailMesh;
 		meshRenderer.material = tailMat;

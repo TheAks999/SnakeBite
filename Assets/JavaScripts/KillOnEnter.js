@@ -1,4 +1,4 @@
-#pragma strict
+/*#pragma strict
 
 function OnTriggerEnter(collider:Collider)
 {
@@ -15,4 +15,4 @@ function OnTriggerEnter(collider:Collider)
 			snakeModel.CutHere();
 		}
 	}
-}
+}*/

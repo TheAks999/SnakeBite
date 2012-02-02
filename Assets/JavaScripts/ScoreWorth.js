@@ -1,4 +1,4 @@
-var pointWorth : int = 0;
+/*var pointWorth : int = 0;
 var playerObjectName : String = "PlayerSnake";
 
 //function DoPoints()
@@ -50,3 +50,5 @@ function OnDestroy()
 		
 	}
 }
+
+*/
