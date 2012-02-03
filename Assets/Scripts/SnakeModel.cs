@@ -21,6 +21,8 @@ public class SnakeModel : MonoBehaviour
 	public Material bodyMat = null;
 	public Material tailMat = null;
 	
+	int lengthToGrow = 0;
+	
 	public Direction initialDirection = Direction.EAST;
 	
 	private bool isGrowing = false;
@@ -108,14 +110,15 @@ public class SnakeModel : MonoBehaviour
 	}
 	
 	
-	public void Grow(int lengthToAdd)
+	private void Grow(int lengthToAdd)
 	{
+		if (lengthToAdd	< 1)
+			return;
+	
 		while (isGrowing){}
 		isGrowing = true;
 		
 		
-		if (lengthToAdd	< 1)
-			return;
 		
 		
 		Debug.Log("Grow by: " + lengthToAdd);
@@ -142,15 +145,20 @@ public class SnakeModel : MonoBehaviour
 		isGrowing = false;
 	}
 	
+	public void GrowSnake(int lengthToAdd)
+	{
+		lengthToGrow += lengthToAdd;
+	}
+	
 	public void FixedUpdate()
 	{
 		numberOfSteps++;
 		
-		if (numberOfSteps >= 100)
+		if (numberOfSteps >= 10)
 		{
 			numberOfSteps = 0;
-			Grow(1);
-		
+			Grow(lengthToGrow);
+			lengthToGrow = 0;
 		}
 	}
 	

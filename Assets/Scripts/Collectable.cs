@@ -13,7 +13,7 @@ public class Collectable : MonoBehaviour
 			if (onCollectGrowAmmount > 0)
 			{
 				Debug.Log("Should grow");
-				piece.GetModel().Grow(onCollectGrowAmmount);
+				piece.GetModel().GrowSnake(onCollectGrowAmmount);
 			}
 			
 			Destroy(gameObject);
