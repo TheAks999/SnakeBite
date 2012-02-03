@@ -186,7 +186,7 @@ public class SnakeModel : MonoBehaviour
 	///////////////////////////////
 	
 	
-	void KillSnake()
+	public void KillSnake()
 	{
 		for (int i = 0; i < numberOfSegments; i++)
 		{
@@ -198,7 +198,7 @@ public class SnakeModel : MonoBehaviour
 		Destroy(gameObject);		
 	}
 	
-	void CutSnakeAt(GameObject segment)
+	public void CutSnakeAt(GameObject segment)
 	{
 		//find the index of the segment
 		int index;

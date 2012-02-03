@@ -5,11 +5,13 @@ public class Deathtrap : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider)
 	{
-		SnakePiece snakePiece = (SnakePiece) collider.transform.GetComponent("SnakeModel");
+		Debug.Log("Ran into something");
+	
+		SnakePiece snakePiece = (SnakePiece) collider.GetComponent("SnakePiece");
 		
-		if (snakePiece)
+		if (snakePiece != null)
 		{
-		
+			snakePiece.snakeModel.KillSnake();
 		}
 	}
 }
