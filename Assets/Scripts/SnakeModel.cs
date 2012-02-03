@@ -195,6 +195,7 @@ public class SnakeModel : MonoBehaviour
 	
 	public void KillSnake()
 	{
+		Debug.Log("Killing a snake");
 		for (int i = 0; i < snake.Length; i++)
 		{
 			Destroy(snake[i]);

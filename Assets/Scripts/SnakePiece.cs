@@ -69,15 +69,19 @@ public class SnakePiece : MonoBehaviour {
 			{
 				case Direction.EAST	:
 					child.transform.Translate(transform.position + Vector3.left);
+					Debug.Log("Child At EAST: " + Vector3.left);
 				break;
 				case Direction.WEST	:
 					child.transform.Translate(transform.position + Vector3.right);
+					Debug.Log("Child At WEST: " + Vector3.right);
 				break;
 				case Direction.NORTH :
 					child.transform.Translate(transform.position + Vector3.back);
+					Debug.Log("Child At NORTH: " + Vector3.back);
 				break;
 				case Direction.SOUTH :
 					child.transform.Translate(transform.position + Vector3.forward);
+					Debug.Log("Child At SOUTH: " + Vector3.forward);
 				break;
 			}
 			
