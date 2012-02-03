@@ -42,6 +42,10 @@ public class SnakeModel : MonoBehaviour
 		}
 	}
 	
+	///////////////////////////////
+	/// This Section Brings LIFE!
+	///////////////////////////////
+	
 	public bool IsGrowing()
 	{
 		return isGrowing;
@@ -110,6 +114,21 @@ public class SnakeModel : MonoBehaviour
 	}
 	
 	
+	void BuildSnakeFrom(GameObject [] pieces)
+	{
+		numberOfSegments = pieces.Length;
+		head = pieces[0];
+		snake = pieces;
+		
+		for (int i = 0; i < numberOfSegments; i++)
+		{
+			((SnakePiece)snake[i].GetComponent("SnakePiece")).snakeModel = this;
+		}
+		
+	
+	}
+	
+	
 	private void Grow(int lengthToAdd)
 	{
 		if (lengthToAdd	< 1)
@@ -159,6 +178,118 @@ public class SnakeModel : MonoBehaviour
 			numberOfSteps = 0;
 			Grow(lengthToGrow);
 			lengthToGrow = 0;
+		}
+	}
+	
+	///////////////////////////////
+	/// This Section Brings DEATH!
+	///////////////////////////////
+	
+	
+	void KillSnake()
+	{
+		for (int i = 0; i < numberOfSegments; i++)
+		{
+			Destroy(snake[i]);
+		}
+	
+		// TODO: if this is a player this means game over
+		
+		Destroy(gameObject);		
+	}
+	
+	void CutSnakeAt(GameObject segment)
+	{
+		//find the index of the segment
+		int index;
+		for (index = 0; index < numberOfSegments; index++)
+		{
+			if (segment	== snake[index])
+				break;
+		}
+		
+		if (index == numberOfSegments)
+		{
+			Debug.LogError("Cutting error");
+			Debug.DebugBreak();
+		}
+		if (index >= criticalLength &&  numberOfSegments-(index+1) >= criticalLength)
+		{
+			GameObject [] oldSnake = new GameObject[index];
+			GameObject [] newSnake = new GameObject[numberOfSegments-index-1];
+			
+			for (int i = 0; i < index; i++)
+			{
+				oldSnake[i] = snake[i];	
+			}
+			
+			((SnakePiece)oldSnake[index-1].GetComponent("SnakePiece")).MakeTail();
+			
+			
+			for (int i = index+1; i < numberOfSegments; i++)
+			{
+				newSnake[i-(index+1)] = snake[i];	
+			}
+			
+			((SnakePiece)newSnake[0].GetComponent("SnakePiece")).MakeHead();
+			Destroy(newSnake[0].GetComponent("FollowerController"));
+			newSnake[0].AddComponent("AIController");
+			
+			GameObject newContainer = (GameObject)Instantiate(gameObject);
+			((SnakeModel)newContainer.GetComponent("SnakeModel")).BuildSnakeFrom(newSnake);
+			newContainer.name = "New Snake Object";
+			
+			  
+			  
+			Destroy(snake[index]);
+			snake = oldSnake;
+		}
+		else if (index >= criticalLength)
+		{
+			GameObject [] newSnake = new GameObject[index];
+			for (int i = 0; i < index; i++)
+			{
+				newSnake[i] = snake[i];	
+			}
+			
+			((SnakePiece)newSnake[index-1].GetComponent("SnakePiece")).MakeTail();
+			
+			for (int i = index; i < numberOfSegments; i++)
+			{
+				Destroy(snake[i]);
+			}
+			
+			snake = newSnake;
+		}
+		else if (numberOfSegments-(index+1) >= criticalLength)
+		{
+			//TODO: if this is the player snake this is game over
+			
+			
+			GameObject [] newSnake = new GameObject[numberOfSegments-index-1];
+			
+			for (int i = index+1; i < numberOfSegments; i++)
+			{
+				newSnake[i-(index+1)] = snake[i];	
+			}
+			
+			head = newSnake[0];
+			((SnakePiece)head.GetComponent("SnakePiece")).MakeHead();
+			Destroy(head.GetComponent("FollowerController"));
+			head.AddComponent("AIController");
+			
+			for (int i = 0; i <= index; i++)
+			{
+				Destroy(snake[i]);
+			}
+			
+			snake = newSnake;
+		
+		}
+		else
+		{
+			//TODO: if this is the player snake this is game over
+			KillSnake();
 		}
 	}
 	
