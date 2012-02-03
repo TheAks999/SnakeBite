@@ -62,6 +62,7 @@ public class SnakePiece : MonoBehaviour {
 			collider.isTrigger = true;
 			Rigidbody rigid = (Rigidbody) child.AddComponent("Rigidbody");
 			rigid.useGravity = false;
+			head.AddComponent("SnakeCollision");
 			
 			//initial starting location - assuming an absolute translation
 			switch(childDirection)

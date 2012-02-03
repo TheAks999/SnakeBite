@@ -7,7 +7,7 @@ public class SnakeModel : MonoBehaviour
 	public enum ControlType {PLAYERKEYBOARD,AI};
 	public ControlType controlType = ControlType.AI;
 	
-	public int numberOfSegments = 10;
+	public int initialNumberOfSegments = 10;
 	public int criticalLength = 3;
 	
 	private GameObject head = null;
@@ -42,6 +42,12 @@ public class SnakeModel : MonoBehaviour
 		}
 	}
 	
+	public GameObject GetHead()
+	{
+		return head;
+	}
+	
+	
 	///////////////////////////////
 	/// This Section Brings LIFE!
 	///////////////////////////////
@@ -53,7 +59,7 @@ public class SnakeModel : MonoBehaviour
 	
 	public void BuildSnake()
 	{
-		snake = new GameObject[numberOfSegments];
+		snake = new GameObject[initialNumberOfSegments];
 		head = new GameObject();
 		snake[0] = head;
 		
@@ -82,7 +88,6 @@ public class SnakeModel : MonoBehaviour
 		head.AddComponent("MeshFilter");
 		head.AddComponent("MeshRenderer");
 		
-		
 
 		
 		
@@ -101,12 +106,13 @@ public class SnakeModel : MonoBehaviour
 		collider.isTrigger = true;
 		Rigidbody rigid = (Rigidbody) head.AddComponent("Rigidbody");
 		rigid.useGravity = false;
+		head.AddComponent("SnakeCollision");
 		
 		
 		piece.MakeHead();	
 	
 		GameObject child = head;
-		for (int i = 1; i < numberOfSegments; i++)
+		for (int i = 1; i < snake.Length; i++)
 		{
 			child = ( (SnakePiece) child.GetComponent("SnakePiece") ).AddChild(initialDirection);
 			snake[i] = child;
@@ -116,11 +122,10 @@ public class SnakeModel : MonoBehaviour
 	
 	void BuildSnakeFrom(GameObject [] pieces)
 	{
-		numberOfSegments = pieces.Length;
 		head = pieces[0];
 		snake = pieces;
 		
-		for (int i = 0; i < numberOfSegments; i++)
+		for (int i = 0; i < pieces.Length; i++)
 		{
 			((SnakePiece)snake[i].GetComponent("SnakePiece")).snakeModel = this;
 		}
@@ -142,14 +147,16 @@ public class SnakeModel : MonoBehaviour
 		
 		Debug.Log("Grow by: " + lengthToAdd);
 		
-		GameObject [] tempList = new GameObject[numberOfSegments + lengthToAdd];
+		GameObject [] tempList = new GameObject[snake.Length + lengthToAdd];
 		
 		
-		for (int i = 0; i < numberOfSegments; i++)
+		for (int i = 0; i < snake.Length; i++)
 		{
 			tempList[i] = snake[i];
 		}
-		
+	
+
+		int numberOfSegments = snake.Length;
 		for (int i = 0; i < lengthToAdd; i++)
 		{
 			GameObject last = (GameObject) tempList[numberOfSegments-1];
@@ -188,7 +195,7 @@ public class SnakeModel : MonoBehaviour
 	
 	public void KillSnake()
 	{
-		for (int i = 0; i < numberOfSegments; i++)
+		for (int i = 0; i < snake.Length; i++)
 		{
 			Destroy(snake[i]);
 		}
@@ -198,25 +205,26 @@ public class SnakeModel : MonoBehaviour
 		Destroy(gameObject);		
 	}
 	
-	public void CutSnakeAt(GameObject segment)
+	public void CutSnakeAt(GameObject segment, GameObject cutter)
 	{
 		//find the index of the segment
 		int index;
-		for (index = 0; index < numberOfSegments; index++)
+
+		Debug.DebugBreak();
+		Debug.Log("Length: " + snake.Length);
+
+		
+		
+		for (index = 0; index < snake.Length; index++)
 		{
 			if (segment	== snake[index])
 				break;
 		}
 		
-		if (index == numberOfSegments)
-		{
-			Debug.LogError("Cutting error");
-			Debug.DebugBreak();
-		}
-		if (index >= criticalLength &&  numberOfSegments-(index+1) >= criticalLength)
+		if (index >= criticalLength &&  snake.Length-(index+1) >= criticalLength)
 		{
 			GameObject [] oldSnake = new GameObject[index];
-			GameObject [] newSnake = new GameObject[numberOfSegments-index-1];
+			GameObject [] newSnake = new GameObject[snake.Length-index-1];
 			
 			for (int i = 0; i < index; i++)
 			{
@@ -226,7 +234,7 @@ public class SnakeModel : MonoBehaviour
 			((SnakePiece)oldSnake[index-1].GetComponent("SnakePiece")).MakeTail();
 			
 			
-			for (int i = index+1; i < numberOfSegments; i++)
+			for (int i = index+1; i < snake.Length; i++)
 			{
 				newSnake[i-(index+1)] = snake[i];	
 			}
@@ -236,13 +244,75 @@ public class SnakeModel : MonoBehaviour
 			newSnake[0].AddComponent("AIController");
 			
 			GameObject newContainer = (GameObject)Instantiate(gameObject);
-			((SnakeModel)newContainer.GetComponent("SnakeModel")).BuildSnakeFrom(newSnake);
+			SnakeModel newModel = (SnakeModel)newContainer.GetComponent("SnakeModel");
+			newModel.BuildSnakeFrom(newSnake);
 			newContainer.name = "New Snake Object";
-			
 			  
 			  
 			Destroy(snake[index]);
 			snake = oldSnake;
+			
+			
+			//force the cutting snake to move forward
+			Movement cutterSnakeMover = (Movement)cutter.GetComponent("Movement");
+			cutterSnakeMover.QueueMovement(cutterSnakeMover.GetCurrentDirection());
+			cutterSnakeMover.QueueMovement(cutterSnakeMover.GetCurrentDirection());
+			
+			//force new snake to move lls or rrs
+			Movement newSnakeMover = (Movement)newModel.GetHead().GetComponent("Movement");
+			switch (cutterSnakeMover.GetCurrentDirection())
+			{
+				case Direction.EAST:
+				newSnakeMover.ForceMovement(Direction.WEST);
+				//newSnakeMover.QueueMovement(Direction.WEST);
+				if (newSnakeMover.GetCurrentDirection() == Direction.NORTH)
+				{
+					newSnakeMover.QueueMovement(Direction.SOUTH);
+				}
+				else
+				{
+					newSnakeMover.QueueMovement(Direction.NORTH);
+				}
+				break;
+				
+				case Direction.WEST:
+				newSnakeMover.ForceMovement(Direction.EAST);
+				if (newSnakeMover.GetCurrentDirection() == Direction.NORTH)
+				{
+					newSnakeMover.QueueMovement(Direction.SOUTH);
+				}
+				else
+				{
+					newSnakeMover.QueueMovement(Direction.NORTH);
+				}
+				break;
+				
+				case Direction.NORTH:
+				newSnakeMover.ForceMovement(Direction.SOUTH);
+				if (newSnakeMover.GetCurrentDirection() == Direction.EAST)
+				{
+					newSnakeMover.QueueMovement(Direction.WEST);
+				}
+				else
+				{
+					newSnakeMover.QueueMovement(Direction.EAST);
+				}
+				break;
+				
+				case Direction.SOUTH:
+				newSnakeMover.ForceMovement(Direction.WEST);
+				if (newSnakeMover.GetCurrentDirection() == Direction.EAST)
+				{
+					newSnakeMover.QueueMovement(Direction.WEST);
+				}
+				else
+				{
+					newSnakeMover.QueueMovement(Direction.EAST);
+				}
+				break;
+			}
+			
+
 		}
 		else if (index >= criticalLength)
 		{
@@ -254,21 +324,21 @@ public class SnakeModel : MonoBehaviour
 			
 			((SnakePiece)newSnake[index-1].GetComponent("SnakePiece")).MakeTail();
 			
-			for (int i = index; i < numberOfSegments; i++)
+			for (int i = index; i < snake.Length; i++)
 			{
 				Destroy(snake[i]);
 			}
 			
 			snake = newSnake;
 		}
-		else if (numberOfSegments-(index+1) >= criticalLength)
+		else if (snake.Length-(index+1) >= criticalLength)
 		{
 			//TODO: if this is the player snake this is game over
 			
 			
-			GameObject [] newSnake = new GameObject[numberOfSegments-index-1];
+			GameObject [] newSnake = new GameObject[snake.Length-index-1];
 			
-			for (int i = index+1; i < numberOfSegments; i++)
+			for (int i = index+1; i < snake.Length; i++)
 			{
 				newSnake[i-(index+1)] = snake[i];	
 			}
@@ -284,7 +354,67 @@ public class SnakeModel : MonoBehaviour
 			}
 			
 			snake = newSnake;
-		
+			
+			
+			//force the cutting snake to move forward
+			Movement cutterSnakeMover = (Movement)cutter.GetComponent("Movement");
+			cutterSnakeMover.QueueMovement(cutterSnakeMover.GetCurrentDirection());
+			cutterSnakeMover.QueueMovement(cutterSnakeMover.GetCurrentDirection());
+			
+			//force new snake to move lls or rrs
+			Movement newSnakeMover = (Movement)head.GetComponent("Movement");
+			switch (cutterSnakeMover.GetCurrentDirection())
+			{
+				case Direction.EAST:
+				newSnakeMover.ForceMovement(Direction.WEST);
+				if (newSnakeMover.GetCurrentDirection() == Direction.NORTH)
+				{
+					newSnakeMover.QueueMovement(Direction.SOUTH);
+				}
+				else
+				{
+					newSnakeMover.QueueMovement(Direction.NORTH);
+				}
+				break;
+				
+				case Direction.WEST:
+				newSnakeMover.ForceMovement(Direction.EAST);
+				if (newSnakeMover.GetCurrentDirection() == Direction.NORTH)
+				{
+					newSnakeMover.QueueMovement(Direction.SOUTH);
+				}
+				else
+				{
+					newSnakeMover.QueueMovement(Direction.NORTH);
+				}
+				break;
+				
+				case Direction.NORTH:
+				newSnakeMover.ForceMovement(Direction.SOUTH);
+				if (newSnakeMover.GetCurrentDirection() == Direction.EAST)
+				{
+					newSnakeMover.QueueMovement(Direction.WEST);
+				}
+				else
+				{
+					newSnakeMover.QueueMovement(Direction.EAST);
+				}
+				break;
+				
+				case Direction.SOUTH:
+				newSnakeMover.ForceMovement(Direction.WEST);
+				if (newSnakeMover.GetCurrentDirection() == Direction.EAST)
+				{
+					newSnakeMover.QueueMovement(Direction.WEST);
+				}
+				else
+				{
+					newSnakeMover.QueueMovement(Direction.EAST);
+				}
+				break;
+			}
+			
+			
 		}
 		else
 		{

@@ -5,7 +5,6 @@ public class Deathtrap : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider)
 	{
-		Debug.Log("Ran into something");
 	
 		SnakePiece snakePiece = (SnakePiece) collider.GetComponent("SnakePiece");
 		

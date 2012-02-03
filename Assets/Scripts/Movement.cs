@@ -19,6 +19,12 @@ public class Movement : MonoBehaviour
 	
 	private bool isMoving = true;
 	
+	private int roundsToPauseFor = 0;
+	
+	private Queue movementQueue = new Queue();
+	
+	private Direction forcedMovement = Direction.NONE;
+	
 	public bool IsMoving()
 	{
 		return isMoving;
@@ -34,10 +40,47 @@ public class Movement : MonoBehaviour
 		isMoving = false;
 	}
 	
+	public void PauseMovementFor(int rounds)
+	{
+		if (rounds > 0)
+		{
+			roundsToPauseFor = rounds;
+		}
+	}
+	
 	Movement()
 	{
 	}
 	
+	public void SwapMovementTop(Direction direction)
+	{/*
+		if (movementQueue.Count <= 1)
+		{
+			movementQueue.Dequeue();
+			movementQueue.en	
+		
+		}
+	*/
+	}
+	
+	public void QueueMovement(Direction direction)
+	{
+		movementQueue.Enqueue(direction);
+	}
+	
+	public void QueueMovement(Queue q)
+	{
+		foreach(Direction direction in q)
+		{
+			movementQueue.Enqueue(direction);
+			
+		}
+	}
+	
+	public void ForceMovement(Direction direction)
+	{
+		forcedMovement = direction;
+	}
 	
 	public void Start()
 	{
@@ -82,54 +125,61 @@ public class Movement : MonoBehaviour
 	
 	public void SetNextDirection(Direction direction)
 	{
-		nextDirection = direction;
+		if (movementQueue.Count == 0)
+			nextDirection = direction;
 	}
 	
 	public void TurnLeft()
 	{
-	
-		switch (currentDirection)
+		if (movementQueue.Count == 0)
 		{
-			case Direction.EAST:
-				nextDirection = Direction.NORTH;
-				break;
-			case Direction.WEST:
-				nextDirection = Direction.SOUTH;
-				break;
-			case Direction.NORTH:
-				nextDirection = Direction.WEST;
-				break;
-			case Direction.SOUTH:
-				nextDirection = Direction.EAST;
-				break;
-			case Direction.NONE:
-				nextDirection = Direction.WEST;
-				break;
+			switch (currentDirection)
+			{
+				case Direction.EAST:
+					nextDirection = Direction.NORTH;
+					break;
+				case Direction.WEST:
+					nextDirection = Direction.SOUTH;
+					break;
+				case Direction.NORTH:
+					nextDirection = Direction.WEST;
+					break;
+				case Direction.SOUTH:
+					nextDirection = Direction.EAST;
+					break;
+				case Direction.NONE:
+					nextDirection = Direction.WEST;
+					break;
+			}
 		}
 	}
 	
 	public void TurnRight()
 	{
-		switch (currentDirection)
+		if (movementQueue.Count == 0)
 		{
-			case Direction.EAST:
-				nextDirection = Direction.SOUTH;
-				break;
-			case Direction.WEST:
-				nextDirection = Direction.NORTH;
-				break;
-			case Direction.NORTH:
-				nextDirection = Direction.EAST;
-				break;
-			case Direction.SOUTH:
-				nextDirection = Direction.WEST;
-				break;
-			case Direction.NONE:
-				nextDirection = Direction.EAST;
-				break;
+			switch (currentDirection)
+			{
+				case Direction.EAST:
+					nextDirection = Direction.SOUTH;
+					break;
+				case Direction.WEST:
+					nextDirection = Direction.NORTH;
+					break;
+				case Direction.NORTH:
+					nextDirection = Direction.EAST;
+					break;
+				case Direction.SOUTH:
+					nextDirection = Direction.WEST;
+					break;
+				case Direction.NONE:
+					nextDirection = Direction.EAST;
+					break;
+			}
+
 		}
 	}
-	
+		
 	private bool VectorEqual(Vector3 v1, Vector3 v2, float epsilon)
 	{
 		Vector3 result = v1 - v2;
@@ -146,10 +196,20 @@ public class Movement : MonoBehaviour
 	void FixedUpdate () 
 	{
 		
-		if ( percentMoved >= 1 && currentDirection != Direction.NONE)
+		if ( percentMoved >= 1 && (currentDirection != Direction.NONE || movementQueue.Count > 0 || forcedMovement != Direction.NONE) )
 		{
 		
 			percentMoved = 0;
+			
+			if (forcedMovement != Direction.NONE)
+			{
+				nextDirection = forcedMovement;
+				forcedMovement = Direction.NONE;
+			}
+			else if (movementQueue.Count > 0)
+			{
+				nextDirection = (Direction)movementQueue.Dequeue();
+			}
 			
 			switch(nextDirection)
 			{
@@ -205,22 +265,6 @@ public class Movement : MonoBehaviour
 									   Mathf.Round(transform.position.z));
 				break;
 			}
-			
-				
-				
-			/*if (forceTurn > 0)
-			{
-				if (forceTurnDirection == true)
-				{
-					TurnLeft();
-				}
-				else
-				{
-					TurnRight();
-				}
-				forceTurn--;
-			}*/
-			
 			
 			
 			switch (nextDirection)
@@ -305,11 +349,25 @@ public class Movement : MonoBehaviour
 			
 			
 			currentDirection = nextDirection;
+			
+			if (roundsToPauseFor > 0)
+			{
+				isMoving = false;
+				roundsToPauseFor--;
+			}
+			else
+			{
+				isMoving = true;
+			}
+			
+			
 		}
 		
+		
+		percentMoved += Time.deltaTime*speed*0.5f;	
+	
 		if(isMoving)
 		{
-			percentMoved += Time.deltaTime*speed*0.5f;	
 			transform.position = Vector3.Lerp(prevPosition,nextPosition,percentMoved);
 		}
 	}
